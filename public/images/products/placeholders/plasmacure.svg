@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+<!-- PLACEHOLDER — zamenjajte z uradno fotografijo izdelka (priporočeno 1600×1200 px, JPG/WebP) -->
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#F6F8FA"/><stop offset="1" stop-color="#E4F5F1"/></linearGradient><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" stroke="#0B1B2B" stroke-opacity=".05"/></pattern><radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 450) scale(460)"><stop stop-color="#38B9AB" stop-opacity=".26"/><stop offset="1" stop-color="#38B9AB" stop-opacity="0"/></radialGradient><filter id="shadow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="36" stdDeviation="38" flood-color="#0B1B2B" flood-opacity=".16"/><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B1B2B" flood-opacity=".06"/></filter><radialGradient id="plasma" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 440) scale(300 190)"><stop stop-color="#D5F5EF"/><stop offset=".35" stop-color="#73D5C8" stop-opacity=".75"/><stop offset=".7" stop-color="#3D7BD9" stop-opacity=".18"/><stop offset="1" stop-color="#3D7BD9" stop-opacity="0"/></radialGradient><linearGradient id="padTop" x1="300" y1="560" x2="900" y2="670" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#EDF1F4"/></linearGradient><filter id="shadowWide" x="-20%" y="-150%" width="140%" height="400%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="36" stdDeviation="38" flood-color="#0B1B2B" flood-opacity=".16"/><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B1B2B" flood-opacity=".06"/></filter></defs>
+<rect width="1200" height="900" fill="url(#bg)"/><rect width="1200" height="900" fill="url(#grid)"/><circle cx="600" cy="450" r="460" fill="url(#glow)"/>
+<ellipse cx="600" cy="440" rx="300" ry="190" fill="url(#plasma)"/>
+<g stroke-linecap="round" stroke-width="2.5">
+<path d="M250 440c58-60 117-60 175 0s117 60 175 0 117-60 175 0 117 60 175 0" stroke="#0D7F76" stroke-opacity=".55"/>
+<path d="M250 410c58-44 117-44 175 0s117 44 175 0 117-44 175 0 117 44 175 0" stroke="#179C90" stroke-opacity=".35"/>
+<path d="M250 470c58-44 117-44 175 0s117 44 175 0 117-44 175 0 117 44 175 0" stroke="#179C90" stroke-opacity=".35"/>
+<path d="M250 380c58-28 117-28 175 0s117 28 175 0 117-28 175 0 117 28 175 0" stroke="#3D7BD9" stroke-opacity=".22"/>
+<path d="M250 500c58-28 117-28 175 0s117 28 175 0 117-28 175 0 117 28 175 0" stroke="#3D7BD9" stroke-opacity=".22"/>
+</g>
+<g fill="#FFFFFF"><circle cx="520" cy="420" r="5"/><circle cx="640" cy="390" r="3.5"/><circle cx="700" cy="470" r="4"/><circle cx="575" cy="480" r="3"/></g>
+<rect x="290" y="580" width="620" height="104" rx="52" fill="url(#padTop)" filter="url(#shadowWide)"/>
+<rect x="290.5" y="580.5" width="619" height="103" rx="51.5" stroke="#DDE3E9"/>
+<g fill="#0D7F76" fill-opacity=".18"><rect x="360" y="616" width="70" height="32" rx="16"/><rect x="450" y="616" width="70" height="32" rx="16"/><rect x="540" y="616" width="70" height="32" rx="16"/><rect x="630" y="616" width="70" height="32" rx="16"/><rect x="720" y="616" width="70" height="32" rx="16"/></g>
+<circle cx="840" cy="632" r="10" fill="#179C90"/>
+</svg>

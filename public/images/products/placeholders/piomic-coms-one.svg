@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+<!-- PLACEHOLDER — zamenjajte z uradno fotografijo izdelka (priporočeno 1600×1200 px, JPG/WebP) -->
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#F6F8FA"/><stop offset="1" stop-color="#E4F5F1"/></linearGradient><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" stroke="#0B1B2B" stroke-opacity=".05"/></pattern><radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 450) scale(460)"><stop stop-color="#38B9AB" stop-opacity=".26"/><stop offset="1" stop-color="#38B9AB" stop-opacity="0"/></radialGradient><filter id="shadow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="36" stdDeviation="38" flood-color="#0B1B2B" flood-opacity=".16"/><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B1B2B" flood-opacity=".06"/></filter><linearGradient id="screen" x1="500" y1="250" x2="700" y2="450" gradientUnits="userSpaceOnUse"><stop stop-color="#142A3E"/><stop offset="1" stop-color="#06121E"/></linearGradient><radialGradient id="core" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 350) scale(70)"><stop stop-color="#73D5C8"/><stop offset="1" stop-color="#179C90" stop-opacity="0"/></radialGradient></defs>
+<rect width="1200" height="900" fill="url(#bg)"/><rect width="1200" height="900" fill="url(#grid)"/><circle cx="600" cy="450" r="460" fill="url(#glow)"/>
+<g stroke="#0D7F76" stroke-width="2">
+<circle cx="600" cy="450" r="250" stroke-opacity=".28"/>
+<circle cx="600" cy="450" r="320" stroke-opacity=".18" stroke-dasharray="2 12" stroke-linecap="round"/>
+<circle cx="600" cy="450" r="395" stroke-opacity=".12"/>
+</g>
+<g transform="rotate(-14 600 450)">
+<rect x="475" y="200" width="250" height="500" rx="125" fill="#FFFFFF" filter="url(#shadow)"/>
+<rect x="475.5" y="200.5" width="249" height="499" rx="124.5" stroke="#DDE3E9"/>
+<rect x="505" y="252" width="190" height="196" rx="95" fill="url(#screen)"/>
+<circle cx="600" cy="350" r="70" fill="url(#core)"/>
+<circle cx="600" cy="350" r="56" stroke="#38B9AB" stroke-width="3" stroke-dasharray="250 102" stroke-linecap="round"/>
+<circle cx="600" cy="350" r="14" fill="#73D5C8"/>
+<rect x="560" y="500" width="80" height="12" rx="6" fill="#DDE3E9"/>
+<rect x="575" y="530" width="50" height="12" rx="6" fill="#EDF1F4"/>
+<circle cx="600" cy="610" r="30" fill="#F6F8FA" stroke="#DDE3E9" stroke-width="2"/>
+<circle cx="600" cy="610" r="8" fill="#179C90"/>
+</g>
+<g fill="#179C90"><circle cx="905" cy="270" r="7" fill-opacity=".7"/><circle cx="290" cy="640" r="5" fill-opacity=".5"/><circle cx="960" cy="560" r="4" fill-opacity=".4"/></g>
+</svg>

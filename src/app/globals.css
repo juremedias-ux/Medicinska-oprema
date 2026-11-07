@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+/* -------------------------------------------------------------------------
+ * Medcore design tokens
+ * ink    — deep navy neutrals (text, dark surfaces, borders)
+ * accent — medical teal (single brand accent)
+ * Contrast (WCAG 2.2): ink-500+ on white ≥ 4.5:1, accent-600+ on white ≥ 4.5:1.
+ * ---------------------------------------------------------------------- */
+@theme {
+  --color-ink-950: #06121e;
+  --color-ink-900: #0b1b2b;
+  --color-ink-800: #142a3e;
+  --color-ink-700: #23394f;
+  --color-ink-600: #3d5368;
+  --color-ink-500: #5d7186;
+  --color-ink-400: #8a99a9;
+  --color-ink-300: #b9c3ce;
+  --color-ink-200: #dde3e9;
+  --color-ink-100: #edf1f4;
+  --color-ink-50: #f6f8fa;
+
+  --color-accent-50: #effbf9;
+  --color-accent-100: #d5f5ef;
+  --color-accent-200: #ace9df;
+  --color-accent-300: #73d5c8;
+  --color-accent-400: #38b9ab;
+  --color-accent-500: #179c90;
+  --color-accent-600: #0d7f76;
+  --color-accent-700: #0d6660;
+  --color-accent-800: #0f524e;
+  --color-accent-900: #104441;
+
+  --radius-4xl: 2rem;
+  --radius-5xl: 2.5rem;
+
+  --shadow-soft: 0 1px 2px rgb(11 27 43 / 0.04), 0 12px 32px -16px rgb(11 27 43 / 0.14);
+  --shadow-lift: 0 2px 6px rgb(11 27 43 / 0.05), 0 32px 64px -32px rgb(11 27 43 / 0.28);
+  --shadow-glow: 0 0 0 1px rgb(13 127 118 / 0.12), 0 24px 60px -24px rgb(13 127 118 / 0.45);
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-fade-up: fade-up 0.9s var(--ease-out-expo) both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-quart) infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -8px, 0);
+    }
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    80%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+}
+
+/* Fonts are provided by next/font as CSS variables on <html>. */
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    /* Keeps anchored sections clear of the fixed header. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-100);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-600);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  /*
+   * Scroll-reveal without JavaScript: CSS scroll-driven animations.
+   * Browsers without support (or users who prefer reduced motion) simply
+   * see the content immediately — nothing is ever hidden by default.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .reveal {
+        animation: reveal-up linear both;
+        animation-timeline: view();
+        animation-range: entry 5% cover 28%;
+      }
+    }
+  }
+
+  /* Subtle technical grid used behind hero and feature surfaces. */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(11 27 43 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(11 27 43 / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .bg-grid-light {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Rich-text styling for legal pages and long product descriptions. */
+  .prose-medcore {
+    color: var(--color-ink-600);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
+  .prose-medcore > * + * {
+    margin-top: 1.1em;
+  }
+
+  .prose-medcore h2 {
+    margin-top: 2.4em;
+    color: var(--color-ink-950);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .prose-medcore h3 {
+    margin-top: 1.8em;
+    color: var(--color-ink-900);
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .prose-medcore ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  .prose-medcore li + li {
+    margin-top: 0.4em;
+  }
+
+  .prose-medcore li::marker {
+    color: var(--color-accent-600);
+  }
+
+  .prose-medcore a {
+    color: var(--color-accent-700);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent-200);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s;
+  }
+
+  .prose-medcore a:hover {
+    text-decoration-color: var(--color-accent-600);
+  }
+
+  .prose-medcore strong {
+    color: var(--color-ink-900);
+    font-weight: 600;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

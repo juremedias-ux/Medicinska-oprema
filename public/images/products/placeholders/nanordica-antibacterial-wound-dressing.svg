@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+<!-- PLACEHOLDER — zamenjajte z uradno fotografijo izdelka (priporočeno 1600×1200 px, JPG/WebP) -->
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#F6F8FA"/><stop offset="1" stop-color="#E4F5F1"/></linearGradient><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" stroke="#0B1B2B" stroke-opacity=".05"/></pattern><radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 450) scale(460)"><stop stop-color="#38B9AB" stop-opacity=".26"/><stop offset="1" stop-color="#38B9AB" stop-opacity="0"/></radialGradient><filter id="shadow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="36" stdDeviation="38" flood-color="#0B1B2B" flood-opacity=".16"/><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B1B2B" flood-opacity=".06"/></filter><linearGradient id="pad" x1="430" y1="280" x2="770" y2="620" gradientUnits="userSpaceOnUse"><stop stop-color="#EFFBF9"/><stop offset="1" stop-color="#ACE9DF"/></linearGradient><pattern id="hex" width="42" height="72.75" patternUnits="userSpaceOnUse" patternTransform="scale(.8)"><path d="M21 0 42 12.12v24.25L21 48.5 0 36.37V12.12zM21 48.5v24.25" stroke="#0D7F76" stroke-opacity=".35" stroke-width="1.6"/></pattern></defs>
+<rect width="1200" height="900" fill="url(#bg)"/><rect width="1200" height="900" fill="url(#grid)"/><circle cx="600" cy="450" r="460" fill="url(#glow)"/>
+<g transform="rotate(-9 600 450)" opacity=".7"><rect x="350" y="200" width="500" height="500" rx="60" fill="#FFFFFF" filter="url(#shadow)"/></g>
+<g transform="rotate(6 600 450)">
+<rect x="330" y="180" width="540" height="540" rx="64" fill="#FFFFFF" filter="url(#shadow)"/>
+<rect x="330.5" y="180.5" width="539" height="539" rx="63.5" stroke="#DDE3E9"/>
+<rect x="362" y="212" width="476" height="476" rx="46" stroke="#B9C3CE" stroke-width="4" stroke-dasharray="1 16" stroke-linecap="round"/>
+<rect x="430" y="280" width="340" height="340" rx="34" fill="url(#pad)"/>
+<rect x="430" y="280" width="340" height="340" rx="34" fill="url(#hex)"/>
+<g fill="#0D7F76"><circle cx="520" cy="360" r="6"/><circle cx="660" cy="410" r="4" fill-opacity=".7"/><circle cx="580" cy="520" r="5" fill-opacity=".8"/><circle cx="700" cy="560" r="3.5" fill-opacity=".6"/><circle cx="485" cy="575" r="3" fill-opacity=".5"/><circle cx="725" cy="330" r="3" fill-opacity=".5"/></g>
+<rect x="430.75" y="280.75" width="338.5" height="338.5" rx="33.25" stroke="#38B9AB" stroke-opacity=".5" stroke-width="1.5"/>
+</g>
+</svg>

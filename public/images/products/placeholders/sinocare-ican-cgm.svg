@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+<!-- PLACEHOLDER — zamenjajte z uradno fotografijo izdelka (priporočeno 1600×1200 px, JPG/WebP) -->
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#F6F8FA"/><stop offset="1" stop-color="#E4F5F1"/></linearGradient><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" stroke="#0B1B2B" stroke-opacity=".05"/></pattern><radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 450) scale(460)"><stop stop-color="#38B9AB" stop-opacity=".26"/><stop offset="1" stop-color="#38B9AB" stop-opacity="0"/></radialGradient><filter id="shadow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="36" stdDeviation="38" flood-color="#0B1B2B" flood-opacity=".16"/><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B1B2B" flood-opacity=".06"/></filter><linearGradient id="card" x1="610" y1="230" x2="990" y2="680" gradientUnits="userSpaceOnUse"><stop stop-color="#142A3E"/><stop offset="1" stop-color="#06121E"/></linearGradient><radialGradient id="dot" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(410 470) scale(52)"><stop stop-color="#73D5C8"/><stop offset="1" stop-color="#0D7F76"/></radialGradient><linearGradient id="area" x1="0" y1="400" x2="0" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#38B9AB" stop-opacity=".35"/><stop offset="1" stop-color="#38B9AB" stop-opacity="0"/></linearGradient></defs>
+<rect width="1200" height="900" fill="url(#bg)"/><rect width="1200" height="900" fill="url(#grid)"/><circle cx="600" cy="450" r="460" fill="url(#glow)"/>
+<rect x="610" y="230" width="390" height="450" rx="44" fill="url(#card)" filter="url(#shadow)"/>
+<rect x="660" y="285" width="120" height="12" rx="6" fill="#FFFFFF" fill-opacity=".55"/>
+<rect x="660" y="312" width="74" height="10" rx="5" fill="#FFFFFF" fill-opacity=".22"/>
+<rect x="660" y="390" width="290" height="110" rx="14" fill="#38B9AB" fill-opacity=".1"/>
+<path d="M660 520c30-6 50-60 82-72s52 30 82 20 46-70 80-74 38 30 46 34v172H660z" fill="url(#area)"/>
+<path d="M660 520c30-6 50-60 82-72s52 30 82 20 46-70 80-74 38 30 46 34" stroke="#73D5C8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="950" cy="428" r="11" fill="#06121E" stroke="#73D5C8" stroke-width="5"/>
+<g fill="#FFFFFF" fill-opacity=".14"><rect x="660" y="610" width="80" height="34" rx="17"/><rect x="752" y="610" width="80" height="34" rx="17"/><rect x="844" y="610" width="106" height="34" rx="17"/></g>
+<circle cx="410" cy="470" r="178" fill="#FFFFFF" filter="url(#shadow)"/>
+<circle cx="410" cy="470" r="177.5" stroke="#DDE3E9"/>
+<circle cx="410" cy="470" r="128" stroke="#EDF1F4" stroke-width="16"/>
+<circle cx="410" cy="470" r="128" stroke="#38B9AB" stroke-opacity=".55" stroke-width="3" stroke-dasharray="1 14" stroke-linecap="round"/>
+<circle cx="410" cy="470" r="52" fill="url(#dot)"/>
+<circle cx="410" cy="470" r="12" fill="#FFFFFF" fill-opacity=".9"/>
+</svg>

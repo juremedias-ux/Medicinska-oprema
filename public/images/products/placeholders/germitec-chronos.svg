@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+<!-- PLACEHOLDER — zamenjajte z uradno fotografijo izdelka (priporočeno 1600×1200 px, JPG/WebP) -->
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#F6F8FA"/><stop offset="1" stop-color="#E4F5F1"/></linearGradient><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" stroke="#0B1B2B" stroke-opacity=".05"/></pattern><radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 450) scale(460)"><stop stop-color="#38B9AB" stop-opacity=".26"/><stop offset="1" stop-color="#38B9AB" stop-opacity="0"/></radialGradient><filter id="shadow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="36" stdDeviation="38" flood-color="#0B1B2B" flood-opacity=".16"/><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B1B2B" flood-opacity=".06"/></filter><linearGradient id="win" x1="440" y1="205" x2="760" y2="610" gradientUnits="userSpaceOnUse"><stop stop-color="#142A3E"/><stop offset="1" stop-color="#06121E"/></linearGradient><linearGradient id="beam" x1="0" y1="215" x2="0" y2="605" gradientUnits="userSpaceOnUse"><stop stop-color="#73D5C8" stop-opacity="0"/><stop offset=".5" stop-color="#73D5C8"/><stop offset="1" stop-color="#73D5C8" stop-opacity="0"/></linearGradient><radialGradient id="uv" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 410) scale(150 210)"><stop stop-color="#38B9AB" stop-opacity=".45"/><stop offset="1" stop-color="#38B9AB" stop-opacity="0"/></radialGradient><linearGradient id="probe" x1="560" y1="250" x2="640" y2="570" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#B9C3CE"/></linearGradient></defs>
+<rect width="1200" height="900" fill="url(#bg)"/><rect width="1200" height="900" fill="url(#grid)"/><circle cx="600" cy="450" r="460" fill="url(#glow)"/>
+<rect x="385" y="140" width="430" height="640" rx="60" fill="#FFFFFF" filter="url(#shadow)"/>
+<rect x="385.5" y="140.5" width="429" height="639" rx="59.5" stroke="#DDE3E9"/>
+<rect x="440" y="205" width="320" height="405" rx="30" fill="url(#win)"/>
+<rect x="440" y="205" width="320" height="405" rx="30" fill="url(#uv)"/>
+<g fill="url(#beam)"><rect x="470" y="215" width="5" height="390" rx="2.5"/><rect x="500" y="215" width="3" height="390" rx="1.5" opacity=".6"/><rect x="697" y="215" width="3" height="390" rx="1.5" opacity=".6"/><rect x="725" y="215" width="5" height="390" rx="2.5"/></g>
+<path d="M584 250h32a10 10 0 0 1 10 10v190c0 14 12 22 12 44v56c0 12-10 22-22 22h-32c-12 0-22-10-22-22v-56c0-22 12-30 12-44V260a10 10 0 0 1 10-10z" fill="url(#probe)"/>
+<rect x="590" y="262" width="20" height="150" rx="10" fill="#FFFFFF" fill-opacity=".6"/>
+<rect x="470" y="660" width="140" height="14" rx="7" fill="#DDE3E9"/>
+<rect x="470" y="688" width="90" height="12" rx="6" fill="#EDF1F4"/>
+<circle cx="730" cy="680" r="26" fill="#EFFBF9" stroke="#ACE9DF" stroke-width="2"/>
+<circle cx="730" cy="680" r="9" fill="#179C90"/>
+</svg>
