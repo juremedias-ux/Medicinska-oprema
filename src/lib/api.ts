@@ -39,6 +39,17 @@ export function isAllowedOrigin(request: Request): boolean {
   return allowed;
 }
 
+/**
+ * Short code for a failed Supabase insert: the Postgres/PostgREST code when
+ * available, otherwise derived from the HTTP status ("CONNECTION" when the
+ * Supabase URL could not be reached at all).
+ */
+export function supabaseErrorCode(error: { code?: string }, status: number): string {
+  if (error.code) return error.code;
+  if (!status) return "CONNECTION";
+  return `HTTP${status}`;
+}
+
 /** Logs a Supabase/PostgREST error with every field that helps diagnose it. */
 export function logSupabaseError(
   scope: string,
@@ -57,22 +68,25 @@ type BodyResult = { ok: true; data: unknown } | { ok: false; response: Response 
 export async function readJsonBody(request: Request): Promise<BodyResult> {
   const contentType = request.headers.get("content-type") ?? "";
   if (!contentType.includes("application/json")) {
-    return { ok: false, response: json({ ok: false, message: formMessages.generic }, 415) };
+    return { ok: false, response: json({ ok: false, message: formMessages.generic, code: "REQUEST" }, 415) };
   }
 
   const declaredLength = Number(request.headers.get("content-length") ?? 0);
   if (declaredLength > MAX_BODY_BYTES) {
-    return { ok: false, response: json({ ok: false, message: formMessages.generic }, 413) };
+    return { ok: false, response: json({ ok: false, message: formMessages.generic, code: "REQUEST" }, 413) };
   }
 
   try {
     const text = await request.text();
     if (text.length > MAX_BODY_BYTES) {
-      return { ok: false, response: json({ ok: false, message: formMessages.generic }, 413) };
+      return {
+        ok: false,
+        response: json({ ok: false, message: formMessages.generic, code: "REQUEST" }, 413),
+      };
     }
     return { ok: true, data: JSON.parse(text) as unknown };
   } catch {
-    return { ok: false, response: json({ ok: false, message: formMessages.generic }, 400) };
+    return { ok: false, response: json({ ok: false, message: formMessages.generic, code: "REQUEST" }, 400) };
   }
 }
 

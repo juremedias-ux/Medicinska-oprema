@@ -5,6 +5,7 @@ import {
   json,
   logSupabaseError,
   readJsonBody,
+  supabaseErrorCode,
 } from "@/lib/api";
 import type { ContactField } from "@/lib/forms";
 import { HONEYPOT_FIELD, formMessages } from "@/lib/forms";
@@ -20,7 +21,7 @@ const isRateLimited = createRateLimiter({ limit: 4, windowMs: 10 * 60 * 1000 });
 
 async function handle(request: Request): Promise<Response> {
   if (!isAllowedOrigin(request)) {
-    return json<ContactField>({ ok: false, message: formMessages.generic }, 403);
+    return json<ContactField>({ ok: false, message: formMessages.generic, code: "ORIGIN" }, 403);
   }
 
   if (isRateLimited(getClientIp(request))) {
@@ -45,11 +46,11 @@ async function handle(request: Request): Promise<Response> {
 
   const supabase = getSupabaseClient();
   if (!supabase) {
-    return json<ContactField>({ ok: false, message: formMessages.unavailable }, 503);
+    return json<ContactField>({ ok: false, message: formMessages.unavailable, code: "CONFIG" }, 503);
   }
 
   const { fullName, email, message } = validation.data;
-  const { error } = await supabase.from("contact_messages").insert({
+  const { error, status: dbStatus } = await supabase.from("contact_messages").insert({
     full_name: fullName,
     email,
     message,
@@ -60,7 +61,11 @@ async function handle(request: Request): Promise<Response> {
     logSupabaseError("contact", error);
     const status = error.code === PostgresErrorCode.checkViolation ? 422 : 500;
     return json<ContactField>(
-      { ok: false, message: status === 422 ? formMessages.validation : formMessages.generic },
+      {
+        ok: false,
+        message: status === 422 ? formMessages.validation : formMessages.generic,
+        code: supabaseErrorCode(error, dbStatus),
+      },
       status,
     );
   }
@@ -73,6 +78,6 @@ export async function POST(request: Request) {
     return await handle(request);
   } catch (error) {
     console.error("[contact] Unexpected error:", error);
-    return json<ContactField>({ ok: false, message: formMessages.unavailable }, 500);
+    return json<ContactField>({ ok: false, message: formMessages.unavailable, code: "SERVER" }, 500);
   }
 }

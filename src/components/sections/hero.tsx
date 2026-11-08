@@ -1,9 +1,11 @@
-import { NotifyLink } from "@/components/forms/notify-context";
+import { HeroNotifyForm } from "@/components/forms/notify-form";
 import { ButtonArrow, buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { CheckIcon } from "@/components/ui/icons";
 import { Eyebrow } from "@/components/ui/section-heading";
-import { notifyCtaLabel, sectionIds, siteConfig } from "@/config/site";
+import { sectionIds, siteConfig } from "@/config/site";
+import { getProductInterestOptions } from "@/lib/products";
+import { cn } from "@/lib/utils";
 
 import { HeroVisual } from "./hero-visual";
 
@@ -46,17 +48,18 @@ export function Hero() {
             dostop do naprednejših rešitev.
           </p>
 
-          <div className="mt-10 flex animate-fade-up flex-col gap-3 [animation-delay:120ms] sm:flex-row">
-            <a href={`#${sectionIds.products}`} className={buttonVariants({ size: "lg" })}>
+          <div className="mt-10 max-w-xl animate-fade-up [animation-delay:120ms]">
+            <HeroNotifyForm options={getProductInterestOptions()} />
+            <a
+              href={`#${sectionIds.products}`}
+              className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "mt-6")}
+            >
               Raziskuj izdelke
               <ButtonArrow />
             </a>
-            <NotifyLink className={buttonVariants({ variant: "secondary", size: "lg" })}>
-              {notifyCtaLabel}
-            </NotifyLink>
           </div>
 
-          <ul className="mt-12 flex flex-col gap-3 text-sm text-ink-600 sm:flex-row sm:flex-wrap sm:gap-x-7">
+          <ul className="mt-10 flex flex-col gap-3 text-sm text-ink-600 sm:flex-row sm:flex-wrap sm:gap-x-7">
             {highlights.map((item) => (
               <li key={item} className="flex items-center gap-2">
                 <span className="flex size-5 items-center justify-center rounded-full bg-accent-100 text-accent-700">

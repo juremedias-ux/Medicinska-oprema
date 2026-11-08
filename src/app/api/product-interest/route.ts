@@ -5,6 +5,7 @@ import {
   json,
   logSupabaseError,
   readJsonBody,
+  supabaseErrorCode,
 } from "@/lib/api";
 import type { ProductInterestField } from "@/lib/forms";
 import { HONEYPOT_FIELD, formMessages } from "@/lib/forms";
@@ -25,7 +26,7 @@ const isRateLimited = createRateLimiter({ limit: 6, windowMs: 10 * 60 * 1000 });
 
 async function handle(request: Request): Promise<Response> {
   if (!isAllowedOrigin(request)) {
-    return json<ProductInterestField>({ ok: false, message: formMessages.generic }, 403);
+    return json<ProductInterestField>({ ok: false, message: formMessages.generic, code: "ORIGIN" }, 403);
   }
 
   if (isRateLimited(getClientIp(request))) {
@@ -51,11 +52,11 @@ async function handle(request: Request): Promise<Response> {
 
   const supabase = getSupabaseClient();
   if (!supabase) {
-    return json<ProductInterestField>({ ok: false, message: formMessages.unavailable }, 503);
+    return json<ProductInterestField>({ ok: false, message: formMessages.unavailable, code: "CONFIG" }, 503);
   }
 
   const { fullName, email, productInterest, message, source } = validation.data;
-  const { error } = await supabase.from("product_interest_signups").insert({
+  const { error, status: dbStatus } = await supabase.from("product_interest_signups").insert({
     full_name: fullName,
     email,
     product_interest: productInterest,
@@ -73,7 +74,11 @@ async function handle(request: Request): Promise<Response> {
     logSupabaseError("product-interest", error);
     const status = error.code === PostgresErrorCode.checkViolation ? 422 : 500;
     return json<ProductInterestField>(
-      { ok: false, message: status === 422 ? formMessages.validation : formMessages.generic },
+      {
+        ok: false,
+        message: status === 422 ? formMessages.validation : formMessages.generic,
+        code: supabaseErrorCode(error, dbStatus),
+      },
       status,
     );
   }
@@ -86,6 +91,6 @@ export async function POST(request: Request) {
     return await handle(request);
   } catch (error) {
     console.error("[product-interest] Unexpected error:", error);
-    return json<ProductInterestField>({ ok: false, message: formMessages.unavailable }, 500);
+    return json<ProductInterestField>({ ok: false, message: formMessages.unavailable, code: "SERVER" }, 500);
   }
 }
