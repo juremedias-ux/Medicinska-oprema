@@ -21,7 +21,7 @@
 create table if not exists public.product_interest_signups (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
-  full_name text not null,
+  full_name text,
   email text not null,
   product_interest text not null,
   message text,
@@ -30,6 +30,11 @@ create table if not exists public.product_interest_signups (
 
 comment on table public.product_interest_signups is
   'Prijave na obvestila o dostopnosti izdelkov (obrazec na spletni strani).';
+
+-- Obrazec zahteva samo e-poštni naslov; ime je neobvezno.
+-- (Posodobi tudi tabelo, ustvarjeno s prejšnjo različico te skripte.)
+alter table public.product_interest_signups
+  alter column full_name drop not null;
 
 -- Omejitve vsebine (ujemajo se z validacijo v src/lib/validation.ts).
 alter table public.product_interest_signups
@@ -41,7 +46,7 @@ alter table public.product_interest_signups
 
 alter table public.product_interest_signups
   add constraint product_interest_signups_full_name_length
-    check (char_length(full_name) between 2 and 120),
+    check (full_name is null or char_length(full_name) between 2 and 120),
   add constraint product_interest_signups_email_format
     check (char_length(email) <= 254 and email ~* '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]{2,}$'),
   add constraint product_interest_signups_product_interest_format

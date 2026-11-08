@@ -14,6 +14,9 @@ export type ContactField = "fullName" | "email" | "message";
 export const signupSources = ["website", "website:product-page"] as const;
 export type SignupSource = (typeof signupSources)[number];
 
+/** Value stored when a visitor signs up for updates about the whole portfolio. */
+export const ALL_PRODUCTS_VALUE = "vsi-produkti";
+
 /** Hidden anti-spam field. Real visitors never fill it in. */
 export const HONEYPOT_FIELD = "company_website";
 

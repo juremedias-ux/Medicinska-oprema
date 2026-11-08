@@ -21,7 +21,8 @@ export type ValidationResult<TData, TField extends string> =
   { success: true; data: TData } | { success: false; errors: FieldErrors<TField> };
 
 export interface ProductInterestData {
-  fullName: string;
+  /** Optional: the signup form only asks for an e-mail address. */
+  fullName: string | null;
   email: string;
   productInterest: string;
   message: string | null;
@@ -113,8 +114,10 @@ export function validateProductInterest(
   const message = readString(record, "message");
   const sourceInput = readString(record, "source");
 
+  const hasName = normalizeName(fullName) !== "";
+
   const errors = compact<ProductInterestField>({
-    fullName: validateFullName(fullName),
+    fullName: hasName ? validateFullName(fullName) : undefined,
     email: validateEmail(email),
     productInterest: validateProductInterestValue(productInterest, allowedValues),
     message: validateInterestMessage(message),
@@ -129,7 +132,7 @@ export function validateProductInterest(
   return {
     success: true,
     data: {
-      fullName: normalizeName(fullName),
+      fullName: hasName ? normalizeName(fullName) : null,
       email: normalizeEmail(email),
       productInterest,
       message: message.trim() || null,

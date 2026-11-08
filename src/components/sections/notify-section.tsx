@@ -25,7 +25,7 @@ type NotifySectionProps = {
 export function NotifySection({
   id = sectionIds.notify,
   title = "Bodite med prvimi, ki izkoristijo nove tehnologije",
-  description = "Nove produkte na slovenski trg uvajamo postopoma. Pustite nam svoje podatke in izberite izdelek, za katerega želite prejemati obvestila. Obvestili vas bomo, ko bo izdelek na voljo, ko bomo objavili dodatne informacije ali ko se bodo odprle možnosti za sodelovanje.",
+  description = "Nove produkte na slovenski trg uvajamo postopoma. Pustite nam svoj e-poštni naslov in obvestili vas bomo, ko bo izdelek na voljo, ko bomo objavili dodatne informacije ali ko se bodo odprle možnosti za sodelovanje.",
   source = "website",
   className,
 }: NotifySectionProps) {
@@ -39,7 +39,7 @@ export function NotifySection({
         aria-hidden="true"
         className="pointer-events-none absolute top-0 left-1/2 h-px w-[min(80rem,100%)] -translate-x-1/2 bg-gradient-to-r from-transparent via-ink-200 to-transparent"
       />
-      <Container className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <Container className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="reveal lg:col-span-5">
           <span className="flex size-12 items-center justify-center rounded-2xl bg-accent-50 text-accent-700 ring-1 ring-accent-200 ring-inset">
             <BellIcon className="size-6" />

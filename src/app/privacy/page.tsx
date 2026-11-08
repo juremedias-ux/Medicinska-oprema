@@ -26,10 +26,8 @@ export default function PrivacyPage() {
       <h2>2. Katere podatke zbiramo</h2>
       <h3>Prijava na obvestila o izdelkih</h3>
       <ul>
-        <li>ime in priimek,</li>
         <li>e-poštni naslov,</li>
-        <li>izdelek, za katerega želite prejemati obvestila,</li>
-        <li>neobvezno sporočilo o tem, kaj vas zanima.</li>
+        <li>izdelek, za katerega želite prejemati obvestila (ali vsi izdelki).</li>
       </ul>
       <h3>Kontaktni obrazec</h3>
       <ul>

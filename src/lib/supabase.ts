@@ -14,14 +14,14 @@ export interface Database {
         Row: {
           id: string;
           created_at: string;
-          full_name: string;
+          full_name: string | null;
           email: string;
           product_interest: string;
           message: string | null;
           source: string;
         };
         Insert: {
-          full_name: string;
+          full_name?: string | null;
           email: string;
           product_interest: string;
           message?: string | null;
@@ -64,6 +64,23 @@ export function isSupabaseConfigured(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }
 
+/** Returns a readable reason when the Supabase settings are missing or malformed. */
+function getConfigProblem(url: string | undefined, key: string | undefined): string | null {
+  if (!url || !key) return "NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is not set.";
+  if (url.includes("your_supabase") || key.includes("your_supabase")) {
+    return "Supabase environment variables still contain the placeholder values from .env.example.";
+  }
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      return "NEXT_PUBLIC_SUPABASE_URL must start with https://";
+    }
+  } catch {
+    return `NEXT_PUBLIC_SUPABASE_URL is not a valid URL (expected https://<project>.supabase.co).`;
+  }
+  return null;
+}
+
 /**
  * Server-side Supabase client using the public anon key.
  *
@@ -77,9 +94,13 @@ export function isSupabaseConfigured(): boolean {
 export function getSupabaseClient(): MedcoreSupabaseClient | null {
   if (cachedClient) return cachedClient;
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return null;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+  const problem = getConfigProblem(url, anonKey);
+  if (problem || !url || !anonKey) {
+    console.error(`[supabase] ${problem}`);
+    return null;
+  }
 
   cachedClient = createClient<Database>(url, anonKey, {
     auth: {

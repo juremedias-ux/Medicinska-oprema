@@ -121,7 +121,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
       <NotifySection
         id={notifySectionId}
         title={`Obvestite me, ko bo ${product.productName} na voljo`}
-        description="Pustite nam svoje podatke in obvestili vas bomo, ko bo izdelek na voljo v Sloveniji, ko bomo objavili dodatne informacije ali ko se bodo odprle možnosti za sodelovanje."
+        description="Pustite nam svoj e-poštni naslov in obvestili vas bomo, ko bo izdelek na voljo v Sloveniji, ko bomo objavili dodatne informacije ali ko se bodo odprle možnosti za sodelovanje."
         source="website:product-page"
       />
 

@@ -28,13 +28,28 @@ export function isAllowedOrigin(request: Request): boolean {
   if (!origin) return true;
 
   const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
-  if (!host) return false;
-
+  let allowed = false;
   try {
-    return new URL(origin).host === host;
+    allowed = Boolean(host) && new URL(origin).host === host;
   } catch {
-    return false;
+    allowed = false;
   }
+
+  if (!allowed) console.warn(`[api] Rejected request from origin "${origin}" (host "${host}").`);
+  return allowed;
+}
+
+/** Logs a Supabase/PostgREST error with every field that helps diagnose it. */
+export function logSupabaseError(
+  scope: string,
+  error: { code?: string; message?: string; details?: string | null; hint?: string | null },
+) {
+  console.error(`[${scope}] Supabase insert failed`, {
+    code: error.code,
+    message: error.message,
+    details: error.details,
+    hint: error.hint,
+  });
 }
 
 type BodyResult = { ok: true; data: unknown } | { ok: false; response: Response };
