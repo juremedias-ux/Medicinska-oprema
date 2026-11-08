@@ -1,14 +1,15 @@
 import { products } from "@/data/products";
 import type { AvailabilityStatus, Product } from "@/types/product";
 
+import { ALL_PRODUCTS_VALUE } from "./forms";
+
+export { ALL_PRODUCTS_VALUE };
+
 export const availabilityLabels: Record<AvailabilityStatus, string> = {
   "coming-soon": "Prihaja na slovenski trg",
   available: "Na voljo v Sloveniji",
   "on-request": "Na voljo na povpraševanje",
 };
-
-/** Value stored when a visitor wants updates about the whole portfolio. */
-export const ALL_PRODUCTS_VALUE = "vsi-produkti";
 
 export interface ProductInterestOption {
   value: string;

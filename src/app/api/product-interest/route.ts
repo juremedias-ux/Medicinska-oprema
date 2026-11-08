@@ -1,4 +1,11 @@
-import { createRateLimiter, getClientIp, isAllowedOrigin, json, readJsonBody } from "@/lib/api";
+import {
+  createRateLimiter,
+  getClientIp,
+  isAllowedOrigin,
+  json,
+  logSupabaseError,
+  readJsonBody,
+} from "@/lib/api";
 import type { ProductInterestField } from "@/lib/forms";
 import { HONEYPOT_FIELD, formMessages } from "@/lib/forms";
 import { getProductInterestValues } from "@/lib/products";
@@ -7,7 +14,7 @@ import { validateProductInterest } from "@/lib/validation";
 
 /**
  * POST /api/product-interest
- * Stores a "notify me when available" signup in Supabase.
+ * Stores a "notify me when available" signup (e-mail + product) in Supabase.
  *
  * Security layers: same-origin check, rate limit, honeypot, server-side
  * validation, insert-only RLS policy, DB check constraints and a unique
@@ -16,7 +23,7 @@ import { validateProductInterest } from "@/lib/validation";
  */
 const isRateLimited = createRateLimiter({ limit: 6, windowMs: 10 * 60 * 1000 });
 
-export async function POST(request: Request) {
+async function handle(request: Request): Promise<Response> {
   if (!isAllowedOrigin(request)) {
     return json<ProductInterestField>({ ok: false, message: formMessages.generic }, 403);
   }
@@ -44,7 +51,6 @@ export async function POST(request: Request) {
 
   const supabase = getSupabaseClient();
   if (!supabase) {
-    console.error("[product-interest] Supabase environment variables are not configured.");
     return json<ProductInterestField>({ ok: false, message: formMessages.unavailable }, 503);
   }
 
@@ -64,7 +70,7 @@ export async function POST(request: Request) {
       return json<ProductInterestField>({ ok: true, message: formMessages.notifySuccess });
     }
 
-    console.error("[product-interest] Supabase insert failed:", error.code, error.message);
+    logSupabaseError("product-interest", error);
     const status = error.code === PostgresErrorCode.checkViolation ? 422 : 500;
     return json<ProductInterestField>(
       { ok: false, message: status === 422 ? formMessages.validation : formMessages.generic },
@@ -73,4 +79,13 @@ export async function POST(request: Request) {
   }
 
   return json<ProductInterestField>({ ok: true, message: formMessages.notifySuccess }, 201);
+}
+
+export async function POST(request: Request) {
+  try {
+    return await handle(request);
+  } catch (error) {
+    console.error("[product-interest] Unexpected error:", error);
+    return json<ProductInterestField>({ ok: false, message: formMessages.unavailable }, 500);
+  }
 }

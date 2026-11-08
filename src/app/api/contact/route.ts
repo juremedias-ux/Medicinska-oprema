@@ -1,4 +1,11 @@
-import { createRateLimiter, getClientIp, isAllowedOrigin, json, readJsonBody } from "@/lib/api";
+import {
+  createRateLimiter,
+  getClientIp,
+  isAllowedOrigin,
+  json,
+  logSupabaseError,
+  readJsonBody,
+} from "@/lib/api";
 import type { ContactField } from "@/lib/forms";
 import { HONEYPOT_FIELD, formMessages } from "@/lib/forms";
 import { PostgresErrorCode, getSupabaseClient } from "@/lib/supabase";
@@ -11,7 +18,7 @@ import { validateContact } from "@/lib/validation";
  */
 const isRateLimited = createRateLimiter({ limit: 4, windowMs: 10 * 60 * 1000 });
 
-export async function POST(request: Request) {
+async function handle(request: Request): Promise<Response> {
   if (!isAllowedOrigin(request)) {
     return json<ContactField>({ ok: false, message: formMessages.generic }, 403);
   }
@@ -38,7 +45,6 @@ export async function POST(request: Request) {
 
   const supabase = getSupabaseClient();
   if (!supabase) {
-    console.error("[contact] Supabase environment variables are not configured.");
     return json<ContactField>({ ok: false, message: formMessages.unavailable }, 503);
   }
 
@@ -51,7 +57,7 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    console.error("[contact] Supabase insert failed:", error.code, error.message);
+    logSupabaseError("contact", error);
     const status = error.code === PostgresErrorCode.checkViolation ? 422 : 500;
     return json<ContactField>(
       { ok: false, message: status === 422 ? formMessages.validation : formMessages.generic },
@@ -60,4 +66,13 @@ export async function POST(request: Request) {
   }
 
   return json<ContactField>({ ok: true, message: formMessages.contactSuccess }, 201);
+}
+
+export async function POST(request: Request) {
+  try {
+    return await handle(request);
+  } catch (error) {
+    console.error("[contact] Unexpected error:", error);
+    return json<ContactField>({ ok: false, message: formMessages.unavailable }, 500);
+  }
 }

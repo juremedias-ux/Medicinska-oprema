@@ -6,7 +6,7 @@ technologies. Built with Next.js (App Router), TypeScript, Tailwind CSS and Supa
 - Single-page homepage: navigation, hero, O nas, Zakaj Medcore, portfolio (5 products), notification form,
   contact, footer
 - Individual product pages at `/products/[slug]`, generated from one data file
-- "Obvesti me ob dostopnosti" signups and contact messages stored in Supabase (insert-only, RLS-protected)
+- "Obvesti me ob dostopnosti" signups (e-mail only) and contact messages stored in Supabase (insert-only, RLS-protected)
 - SEO: Slovenian metadata, Open Graph / Twitter cards, generated OG images, sitemap, robots, JSON-LD
 - Accessible (semantic landmarks, labelled fields, keyboard + screen-reader friendly forms, reduced motion)
 
@@ -121,7 +121,7 @@ The script is idempotent (safe to run again) and creates:
 
 | Object                                    | Purpose                                                                 |
 | ----------------------------------------- | ----------------------------------------------------------------------- |
-| `public.product_interest_signups`         | Notification signups — the table from the brief, unchanged columns       |
+| `public.product_interest_signups`         | Notification signups — the table from the brief; `full_name` is optional because the form asks only for an e-mail |
 | CHECK constraints                         | Name length, e-mail format, product value format, message length, source |
 | Unique index `(lower(email), product_interest)` | Prevents duplicate signups for the same e-mail and product          |
 | `public.contact_messages`                 | Contact-form messages (same security model)                              |
@@ -183,9 +183,9 @@ Preview deployments are automatically excluded from search engines via `robots.t
 ### In the browser
 
 1. Open the homepage and click **Obvesti me ob dostopnosti** on a product card — the page scrolls to the
-   form and preselects that product.
-2. Submit empty → Slovenian validation messages appear and focus moves to the first invalid field.
-3. Fill in name, e-mail, product → **Pošlji prijavo** → "Hvala! Obvestili vas bomo, ko bo izbrani produkt na voljo."
+   form and shows "Prijava za: <product>". Generic buttons (hero, header) sign up for "Vsi produkti".
+2. Submit empty → "Vnesite e-poštni naslov." appears and focus moves to the field.
+3. Enter an e-mail → **Pošlji prijavo** → "Hvala! Obvestili vas bomo, ko bo izbrani produkt na voljo."
 4. In Supabase **Table Editor → product_interest_signups**, the new row is visible (e-mail stored in lowercase).
 5. Submit the same e-mail + product again → same success message, but no duplicate row.
 6. Repeat with the contact form → row in `contact_messages`.
@@ -195,7 +195,7 @@ Preview deployments are automatically excluded from search engines via `robots.t
 With the dev server running:
 
 ```bash
-curl -i -X POST http://localhost:3000/api/product-interest -H "Content-Type: application/json" -d '{"fullName":"Ana Novak","email":"ana@example.si","productInterest":"piomic-coms-one","message":"","source":"website"}'
+curl -i -X POST http://localhost:3000/api/product-interest -H "Content-Type: application/json" -d '{"email":"ana@example.si","productInterest":"piomic-coms-one","source":"website"}'
 ```
 
 Expected: `201` and `{"ok":true,...}`. Invalid input returns `422` with `fieldErrors`; missing Supabase
@@ -205,9 +205,12 @@ Valid `productInterest` values are the product slugs from `src/data/products.ts`
 
 ### Troubleshooting
 
+Server-side errors are written to the logs (Vercel: project → **Logs**, filter `/api/product-interest`).
+
 | Symptom                                   | Cause / fix                                                                                   |
 | ----------------------------------------- | --------------------------------------------------------------------------------------------- |
-| "Obrazec trenutno ni na voljo …" (503)    | Environment variables missing — check `.env.local` / Vercel and redeploy                       |
+| "Obrazec trenutno ni na voljo …" (503)    | Environment variables missing, placeholder or malformed — the log line `[supabase] …` names the problem; fix in Vercel and redeploy |
+| "Pri pošiljanju je prišlo do napake …" (500) | The log line `Supabase insert failed` shows `code`, `message` and `hint` — usually the SQL script was not run or the key is wrong |
 | Server log shows `42501`                  | Grants or policy missing — re-run `supabase/schema.sql`; ensure the Data API exposes `public`  |
 | Server log reports the table is not found | The SQL script was not run in this project (or the schema cache is stale — re-run the script) |
 | Repeated `429`                            | Rate limit (signups: 6, contact: 4 requests per 10 min per IP) — wait a few minutes            |
@@ -337,6 +340,9 @@ browsers without support, and all motion is disabled for `prefers-reduced-motion
   adjusting the wording if that matters for accuracy.
 - The contact form stores messages in a second table (`contact_messages`); the brief did not specify a
   destination.
+- The notification form asks only for an e-mail address (changed on request). The product is taken from
+  the button that opened the form; generic buttons store `vsi-produkti`. The section text was adjusted
+  accordingly ("Pustite nam svoj e-poštni naslov in obvestili vas bomo, …").
 - URLs follow the brief (`/products/[slug]`, `/privacy`, `/terms`); `/products` redirects to the portfolio.
 
 ---

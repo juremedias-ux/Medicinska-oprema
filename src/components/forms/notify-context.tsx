@@ -13,6 +13,7 @@ import {
 } from "react";
 
 import { sectionIds } from "@/config/site";
+import { ALL_PRODUCTS_VALUE } from "@/lib/forms";
 
 /**
  * Connects "Obvesti me ob dostopnosti" buttons with the notification form
@@ -33,7 +34,7 @@ type NotifyContextValue = {
 const NotifyContext = createContext<NotifyContextValue | null>(null);
 
 export function NotifyProvider({
-  initialProduct = "",
+  initialProduct = ALL_PRODUCTS_VALUE,
   sectionId = sectionIds.notify,
   children,
 }: {
@@ -46,7 +47,8 @@ export function NotifyProvider({
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const requestNotify = useCallback((productSlug?: string) => {
-    if (productSlug) setProductInterest(productSlug);
+    // Product CTAs select their product; generic CTAs sign up for all products.
+    setProductInterest(productSlug ?? ALL_PRODUCTS_VALUE);
     setRequestId((id) => id + 1);
 
     // After React commits (the form may re-render from its success state),
