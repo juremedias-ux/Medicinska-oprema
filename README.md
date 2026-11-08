@@ -6,7 +6,7 @@ technologies. Built with Next.js (App Router), TypeScript, Tailwind CSS and Supa
 - Single-page homepage: navigation, hero, O nas, Zakaj Medcore, portfolio (5 products), notification form,
   contact, footer
 - Individual product pages at `/products/[slug]`, generated from one data file
-- "Obvesti me ob dostopnosti" signups (e-mail only) and contact messages stored in Supabase (insert-only, RLS-protected)
+- "Obvesti me ob dostopnosti" signups and contact requests (both e-mail only) stored in Supabase (insert-only, RLS-protected)
 - SEO: Slovenian metadata, Open Graph / Twitter cards, generated OG images, sitemap, robots, JSON-LD
 - Accessible (semantic landmarks, labelled fields, keyboard + screen-reader friendly forms, reduced motion)
 
@@ -124,7 +124,7 @@ The script is idempotent (safe to run again) and creates:
 | `public.product_interest_signups`         | Notification signups — the table from the brief; `full_name` is optional because the form asks only for an e-mail |
 | CHECK constraints                         | Name length, e-mail format, product value format, message length, source |
 | Unique index `(lower(email), product_interest)` | Prevents duplicate signups for the same e-mail and product          |
-| `public.contact_messages`                 | Contact-form messages (same security model)                              |
+| `public.contact_messages`                 | Contact requests (same security model; `full_name` and `message` optional because the form asks only for an e-mail) |
 | Row Level Security + insert-only policy   | Role `anon` may **only INSERT**; no SELECT, UPDATE or DELETE             |
 | Explicit `GRANT INSERT` / `REVOKE`        | Defense in depth, independent of project default privileges              |
 
@@ -188,7 +188,7 @@ Preview deployments are automatically excluded from search engines via `robots.t
 3. Enter an e-mail → **Pošlji prijavo** → "Hvala! Obvestili vas bomo, ko bo izbrani produkt na voljo."
 4. In Supabase **Table Editor → product_interest_signups**, the new row is visible (e-mail stored in lowercase).
 5. Submit the same e-mail + product again → same success message, but no duplicate row.
-6. Repeat with the contact form → row in `contact_messages`.
+6. Enter an e-mail in the contact form → **Kontaktirajte me** → "Hvala! Oglasili se vam bomo v najkrajšem možnem času." → row in `contact_messages`.
 
 ### From the command line
 
@@ -340,6 +340,8 @@ browsers without support, and all motion is disabled for `prefers-reduced-motion
   adjusting the wording if that matters for accuracy.
 - The contact form stores messages in a second table (`contact_messages`); the brief did not specify a
   destination.
+- The contact form asks only for an e-mail address (changed on request): no name or message field; button
+  "Kontaktirajte me", card title "Želite, da vas kontaktiramo?".
 - The notification form asks only for an e-mail address (changed on request). The product is taken from
   the button that opened the form; generic buttons store `vsi-produkti`. The section text was adjusted
   accordingly ("Pustite nam svoj e-poštni naslov in obvestili vas bomo, …").

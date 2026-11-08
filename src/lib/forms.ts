@@ -22,7 +22,7 @@ export const HONEYPOT_FIELD = "company_website";
 
 export const formMessages = {
   notifySuccess: "Hvala! Obvestili vas bomo, ko bo izbrani produkt na voljo.",
-  contactSuccess: "Hvala za sporočilo! Odgovorili vam bomo v najkrajšem možnem času.",
+  contactSuccess: "Hvala! Oglasili se vam bomo v najkrajšem možnem času.",
   validation: "Preverite označena polja in poskusite znova.",
   rateLimited: "Prejeli smo preveč poskusov. Prosimo, poskusite znova čez nekaj minut.",
   unavailable: "Obrazec trenutno ni na voljo. Prosimo, poskusite kasneje ali nam pišite po e-pošti.",

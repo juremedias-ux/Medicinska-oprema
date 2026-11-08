@@ -84,14 +84,20 @@ create policy "Anon can insert product interest signups"
 create table if not exists public.contact_messages (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
-  full_name text not null,
+  full_name text,
   email text not null,
-  message text not null,
+  message text,
   source text not null default 'website'
 );
 
 comment on table public.contact_messages is
   'Sporočila iz kontaktnega obrazca na spletni strani.';
+
+-- Obrazec zahteva samo e-poštni naslov; ime in sporočilo sta neobvezna.
+-- (Posodobi tudi tabelo, ustvarjeno s prejšnjo različico te skripte.)
+alter table public.contact_messages
+  alter column full_name drop not null,
+  alter column message drop not null;
 
 alter table public.contact_messages
   drop constraint if exists contact_messages_full_name_length,
@@ -101,11 +107,11 @@ alter table public.contact_messages
 
 alter table public.contact_messages
   add constraint contact_messages_full_name_length
-    check (char_length(full_name) between 2 and 120),
+    check (full_name is null or char_length(full_name) between 2 and 120),
   add constraint contact_messages_email_format
     check (char_length(email) <= 254 and email ~* '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]{2,}$'),
   add constraint contact_messages_message_length
-    check (char_length(message) between 10 and 3000),
+    check (message is null or char_length(message) between 10 and 3000),
   add constraint contact_messages_source_format
     check (source ~ '^[a-z0-9:_-]{1,64}$');
 

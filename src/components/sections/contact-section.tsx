@@ -48,7 +48,7 @@ export function ContactSection() {
       aria-labelledby="kontakt-naslov"
       className="relative bg-ink-50 py-24 sm:py-32"
     >
-      <Container className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <Container className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="reveal lg:col-span-5">
           <SectionHeading
             id="kontakt-naslov"
@@ -98,8 +98,12 @@ export function ContactSection() {
 
         <div className="reveal lg:col-span-7">
           <div className="rounded-4xl bg-white p-6 shadow-soft ring-1 ring-ink-200/70 sm:p-10">
-            <h3 className="text-xl font-semibold tracking-tight text-ink-950">Pošljite nam sporočilo</h3>
-            <p className="mt-2 text-[0.9375rem] text-ink-600">Odgovorili vam bomo po e-pošti.</p>
+            <h3 className="text-xl font-semibold tracking-tight text-ink-950">
+              Želite, da vas kontaktiramo?
+            </h3>
+            <p className="mt-2 text-[0.9375rem] text-ink-600">
+              Pustite nam svoj e-poštni naslov in oglasili se vam bomo.
+            </p>
             <div className="mt-8">
               <ContactForm />
             </div>

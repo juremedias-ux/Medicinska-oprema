@@ -34,15 +34,15 @@ export interface Database {
         Row: {
           id: string;
           created_at: string;
-          full_name: string;
+          full_name: string | null;
           email: string;
-          message: string;
+          message: string | null;
           source: string;
         };
         Insert: {
-          full_name: string;
+          full_name?: string | null;
           email: string;
-          message: string;
+          message?: string | null;
           source?: string;
         };
         Update: never;

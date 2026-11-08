@@ -31,14 +31,9 @@ export default function PrivacyPage() {
       </ul>
       <h3>Kontaktni obrazec</h3>
       <ul>
-        <li>ime in priimek,</li>
-        <li>e-poštni naslov,</li>
-        <li>vsebina sporočila.</li>
+        <li>e-poštni naslov.</li>
       </ul>
-      <p>
-        Prek obrazcev ne zbiramo podatkov o zdravstvenem stanju. Prosimo, da v sporočila ne vpisujete podatkov
-        o svojem zdravju ali zdravju drugih oseb.
-      </p>
+      <p>Prek obrazcev ne zbiramo podatkov o zdravstvenem stanju.</p>
       <h3>Tehnični podatki</h3>
       <p>
         Ob obisku spletne strani ponudnik gostovanja samodejno obdeluje tehnične podatke (npr. IP-naslov,
@@ -53,7 +48,7 @@ export default function PrivacyPage() {
           GDPR).
         </li>
         <li>
-          <strong>Odgovor na vaše sporočilo</strong> — na podlagi ukrepov na vašo zahtevo pred morebitno
+          <strong>Odgovor na vaše povpraševanje</strong> — na podlagi ukrepov na vašo zahtevo pred morebitno
           sklenitvijo pogodbe oziroma našega zakonitega interesa za komunikacijo s poslovnimi partnerji in
           uporabniki (točki (b) in (f) prvega odstavka 6. člena GDPR).
         </li>
