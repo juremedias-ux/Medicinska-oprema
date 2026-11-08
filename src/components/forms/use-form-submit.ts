@@ -33,7 +33,10 @@ export function useFormSubmit<TField extends string>(endpoint: string) {
         }
 
         setStatus("error");
-        setErrorMessage(data?.message ?? formMessages.generic);
+        // A short code (or the HTTP status) helps diagnose problems from a screenshot.
+        const code = data && !data.ok ? data.code : data ? undefined : `HTTP${response.status}`;
+        const message = data?.message ?? formMessages.generic;
+        setErrorMessage(code ? `${message} (Koda napake: ${code})` : message);
         return { ok: false, fieldErrors: data && !data.ok ? data.fieldErrors : undefined };
       } catch {
         setStatus("error");

@@ -5,7 +5,14 @@
 export type FieldErrors<TField extends string = string> = Partial<Record<TField, string>>;
 
 export type FormApiResponse<TField extends string = string> =
-  { ok: true; message: string } | { ok: false; message: string; fieldErrors?: FieldErrors<TField> };
+  | { ok: true; message: string }
+  | {
+      ok: false;
+      message: string;
+      fieldErrors?: FieldErrors<TField>;
+      /** Short diagnostic code shown to the visitor (e.g. "23502", "ORIGIN", "CONFIG"). */
+      code?: string;
+    };
 
 export type ProductInterestField = "fullName" | "email" | "productInterest" | "message";
 export type ContactField = "fullName" | "email" | "message";

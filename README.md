@@ -182,6 +182,7 @@ Preview deployments are automatically excluded from search engines via `robots.t
 
 ### In the browser
 
+0. The hero has its own e-mail field ("Obvesti me ob dostopnosti") that signs up for "Vsi produkti".
 1. Open the homepage and click **Obvesti me ob dostopnosti** on a product card — the page scrolls to the
    form and shows "Prijava za: <product>". Generic buttons (hero, header) sign up for "Vsi produkti".
 2. Submit empty → "Vnesite e-poštni naslov." appears and focus moves to the field.
@@ -206,6 +207,18 @@ Valid `productInterest` values are the product slugs from `src/data/products.ts`
 ### Troubleshooting
 
 Server-side errors are written to the logs (Vercel: project → **Logs**, filter `/api/product-interest`).
+Failed submissions also show a short code in the form message, e.g. "(Koda napake: 23502)":
+
+| Code                     | Meaning / fix                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------- |
+| `23502`                  | Database still has an older schema (name/message required) — re-run `supabase/schema.sql` |
+| `42P01`, `PGRST205`      | Table does not exist — run `supabase/schema.sql`                                      |
+| `42501`                  | Missing grants/policy — re-run `supabase/schema.sql`                                  |
+| `HTTP401`, `PGRST301`    | Wrong API key — fix `NEXT_PUBLIC_SUPABASE_ANON_KEY` in Vercel and redeploy            |
+| `CONNECTION`             | Supabase URL unreachable — fix `NEXT_PUBLIC_SUPABASE_URL` and redeploy                |
+| `CONFIG`                 | Environment variables missing, placeholder or malformed                               |
+| `ORIGIN`                 | Request came from another domain                                                      |
+
 
 | Symptom                                   | Cause / fix                                                                                   |
 | ----------------------------------------- | --------------------------------------------------------------------------------------------- |
