@@ -30,9 +30,11 @@ export interface ProductInterestData {
 }
 
 export interface ContactData {
-  fullName: string;
+  /** Optional: the contact form only asks for an e-mail address. */
+  fullName: string | null;
   email: string;
-  message: string;
+  /** Optional: the contact form only asks for an e-mail address. */
+  message: string | null;
 }
 
 type UnknownRecord = Record<string, unknown>;
@@ -146,11 +148,13 @@ export function validateContact(input: unknown): ValidationResult<ContactData, C
   const fullName = readString(record, "fullName");
   const email = readString(record, "email");
   const message = readString(record, "message");
+  const hasName = normalizeName(fullName) !== "";
+  const hasMessage = message.trim() !== "";
 
   const errors = compact<ContactField>({
-    fullName: validateFullName(fullName),
+    fullName: hasName ? validateFullName(fullName) : undefined,
     email: validateEmail(email),
-    message: validateContactMessage(message),
+    message: hasMessage ? validateContactMessage(message) : undefined,
   });
 
   if (Object.keys(errors).length > 0) return { success: false, errors };
@@ -158,9 +162,9 @@ export function validateContact(input: unknown): ValidationResult<ContactData, C
   return {
     success: true,
     data: {
-      fullName: normalizeName(fullName),
+      fullName: hasName ? normalizeName(fullName) : null,
       email: normalizeEmail(email),
-      message: message.trim(),
+      message: hasMessage ? message.trim() : null,
     },
   };
 }

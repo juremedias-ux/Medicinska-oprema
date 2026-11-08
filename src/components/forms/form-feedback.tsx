@@ -68,11 +68,3 @@ export function HoneypotField({ id }: { id: string }) {
     </div>
   );
 }
-
-export function CharacterCount({ id, length, max }: { id: string; length: number; max: number }) {
-  return (
-    <p id={id} className="text-right font-mono text-[0.6875rem] text-ink-500" aria-live="off">
-      {length}/{max}
-    </p>
-  );
-}

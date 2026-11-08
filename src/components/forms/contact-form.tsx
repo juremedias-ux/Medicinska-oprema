@@ -5,87 +5,55 @@ import { useId, useState, type FormEvent } from "react";
 import { flushSync } from "react-dom";
 
 import { Button, ButtonArrow } from "@/components/ui/button";
-import { Field, Input, Textarea, describedBy } from "@/components/ui/form-controls";
+import { Field, Input, describedBy } from "@/components/ui/form-controls";
 import { SpinnerIcon } from "@/components/ui/icons";
-import type { ContactField, FieldErrors } from "@/lib/forms";
+import type { ContactField } from "@/lib/forms";
 import { HONEYPOT_FIELD, formMessages } from "@/lib/forms";
-import {
-  limits,
-  validateContact,
-  validateContactMessage,
-  validateEmail,
-  validateFullName,
-} from "@/lib/validation";
+import { limits, validateContact, validateEmail } from "@/lib/validation";
 
-import { CharacterCount, FormErrorAlert, FormSuccess, HoneypotField } from "./form-feedback";
-import { focusFirstError } from "./form-utils";
+import { FormErrorAlert, FormSuccess, HoneypotField } from "./form-feedback";
 import { useFormSubmit } from "./use-form-submit";
 
-const emptyValues: Record<ContactField, string> = { fullName: "", email: "", message: "" };
-
-const fieldOrder: ContactField[] = ["fullName", "email", "message"];
-
-const validators: Record<ContactField, (value: string) => string | undefined> = {
-  fullName: validateFullName,
-  email: validateEmail,
-  message: validateContactMessage,
-};
-
+/** One-field contact request: the visitor leaves an e-mail address and Medcore gets in touch. */
 export function ContactForm() {
   const id = useId();
-  const ids = {
-    fullName: `${id}-full-name`,
-    email: `${id}-email`,
-    message: `${id}-message`,
-    messageCount: `${id}-message-count`,
-    honeypot: `${id}-website`,
-    privacy: `${id}-privacy`,
-  };
+  const emailId = `${id}-email`;
+  const privacyId = `${id}-privacy`;
 
   const { status, errorMessage, submit, reset } = useFormSubmit<ContactField>("/api/contact");
-  const [values, setValues] = useState(emptyValues);
-  const [errors, setErrors] = useState<FieldErrors<ContactField>>({});
-
-  function updateError(field: ContactField, value: string) {
-    setErrors((current) => ({ ...current, [field]: validators[field](value) }));
-  }
-
-  function handleChange(field: ContactField, value: string) {
-    setValues((current) => ({ ...current, [field]: value }));
-    if (errors[field]) updateError(field, value);
-  }
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | undefined>();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
+    const input = form.elements.namedItem("email");
     const honeypot = new FormData(form).get(HONEYPOT_FIELD);
 
-    const payload = { ...values, [HONEYPOT_FIELD]: honeypot ?? "" };
+    const payload = { email, [HONEYPOT_FIELD]: honeypot ?? "" };
     const validation = validateContact(payload);
 
     if (!validation.success) {
-      // Render the messages first so screen readers announce them on focus.
-      flushSync(() => setErrors(validation.errors));
-      focusFirstError(form, validation.errors, fieldOrder);
+      // Render the message first so screen readers announce it on focus.
+      flushSync(() => setEmailError(validation.errors.email ?? formMessages.validation));
+      if (input instanceof HTMLElement) input.focus();
       return;
     }
 
-    setErrors({});
+    setEmailError(undefined);
     const result = await submit(payload);
 
     if (result.ok) {
-      setValues(emptyValues);
-    } else if (result.fieldErrors) {
-      const fieldErrors = result.fieldErrors;
-      flushSync(() => setErrors(fieldErrors));
-      focusFirstError(form, fieldErrors, fieldOrder);
+      setEmail("");
+    } else if (result.fieldErrors?.email) {
+      const message = result.fieldErrors.email;
+      flushSync(() => setEmailError(message));
+      if (input instanceof HTMLElement) input.focus();
     }
   }
 
   if (status === "success") {
-    return (
-      <FormSuccess title={formMessages.contactSuccess} actionLabel="Pošlji novo sporočilo" onAction={reset} />
-    );
+    return <FormSuccess title={formMessages.contactSuccess} actionLabel="Pošlji znova" onAction={reset} />;
   }
 
   const isSubmitting = status === "submitting";
@@ -94,88 +62,64 @@ export function ContactForm() {
     <form
       noValidate
       onSubmit={handleSubmit}
-      className="relative flex flex-col gap-5"
-      aria-describedby={ids.privacy}
+      className="relative flex flex-col gap-6"
+      aria-describedby={privacyId}
     >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field id={ids.fullName} label="Ime in priimek" error={errors.fullName}>
+      <Field id={emailId} label="E-poštni naslov" error={emailError}>
+        <div className="flex flex-col gap-3 sm:flex-row">
           <Input
-            id={ids.fullName}
-            name="fullName"
-            autoComplete="name"
-            maxLength={limits.nameMax}
-            required
-            value={values.fullName}
-            onChange={(event) => handleChange("fullName", event.target.value)}
-            onBlur={(event) => event.target.value && updateError("fullName", event.target.value)}
-            aria-invalid={Boolean(errors.fullName)}
-            aria-describedby={describedBy(ids.fullName, { error: Boolean(errors.fullName) })}
-          />
-        </Field>
-        <Field id={ids.email} label="E-poštni naslov" error={errors.email}>
-          <Input
-            id={ids.email}
+            id={emailId}
             name="email"
             type="email"
             inputMode="email"
             autoComplete="email"
+            placeholder="ime@primer.si"
             maxLength={limits.emailMax}
             required
-            value={values.email}
-            onChange={(event) => handleChange("email", event.target.value)}
-            onBlur={(event) => event.target.value && updateError("email", event.target.value)}
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={describedBy(ids.email, { error: Boolean(errors.email) })}
+            value={email}
+            onChange={(event) => {
+              setEmail(event.target.value);
+              if (emailError) setEmailError(validateEmail(event.target.value));
+            }}
+            aria-invalid={Boolean(emailError)}
+            aria-describedby={describedBy(emailId, { error: Boolean(emailError) })}
+            className="sm:flex-1"
           />
-        </Field>
-      </div>
-
-      <Field id={ids.message} label="Sporočilo" error={errors.message}>
-        <Textarea
-          id={ids.message}
-          name="message"
-          rows={5}
-          maxLength={limits.contactMessageMax}
-          required
-          value={values.message}
-          onChange={(event) => handleChange("message", event.target.value)}
-          onBlur={(event) => event.target.value && updateError("message", event.target.value)}
-          aria-invalid={Boolean(errors.message)}
-          aria-describedby={[describedBy(ids.message, { error: Boolean(errors.message) }), ids.messageCount]
-            .filter(Boolean)
-            .join(" ")}
-        />
-        <CharacterCount id={ids.messageCount} length={values.message.length} max={limits.contactMessageMax} />
+          <Button
+            type="submit"
+            size="lg"
+            disabled={isSubmitting}
+            aria-disabled={isSubmitting}
+            className="h-12 sm:px-6"
+          >
+            {isSubmitting ? (
+              <>
+                <SpinnerIcon className="animate-spin" />
+                Pošiljanje …
+              </>
+            ) : (
+              <>
+                Kontaktirajte me
+                <ButtonArrow />
+              </>
+            )}
+          </Button>
+        </div>
       </Field>
 
-      <HoneypotField id={ids.honeypot} />
+      <HoneypotField id={`${id}-website`} />
 
       {status === "error" && errorMessage ? <FormErrorAlert message={errorMessage} /> : null}
 
-      <div className="flex flex-col gap-4 pt-1">
-        <Button type="submit" size="lg" fullWidth disabled={isSubmitting} aria-disabled={isSubmitting}>
-          {isSubmitting ? (
-            <>
-              <SpinnerIcon className="animate-spin" />
-              Pošiljanje …
-            </>
-          ) : (
-            <>
-              Pošlji sporočilo
-              <ButtonArrow />
-            </>
-          )}
-        </Button>
-        <p id={ids.privacy} className="text-[0.8125rem] leading-relaxed text-ink-500">
-          Vaše podatke bomo uporabili izključno za odgovor na vaše sporočilo.{" "}
-          <Link
-            href="/privacy"
-            className="font-medium text-ink-700 underline decoration-ink-300 underline-offset-2 hover:decoration-ink-600"
-          >
-            Politika zasebnosti
-          </Link>
-        </p>
-      </div>
+      <p id={privacyId} className="text-[0.8125rem] leading-relaxed text-ink-500">
+        Vaš e-poštni naslov bomo uporabili izključno za odgovor na vaše povpraševanje.{" "}
+        <Link
+          href="/privacy"
+          className="font-medium text-ink-700 underline decoration-ink-300 underline-offset-2 hover:decoration-ink-600"
+        >
+          Politika zasebnosti
+        </Link>
+      </p>
     </form>
   );
 }
