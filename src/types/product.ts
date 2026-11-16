@@ -1,32 +1,58 @@
 /**
- * Product data model.
+ * Product data model — built for understanding, not only for sale.
  *
- * Every product lives in `src/data/products.ts`. The homepage portfolio,
- * the notification form options, the sitemap and the `/products/[slug]`
- * detail pages are all generated from this single structure.
- *
- * Fields under `details` are optional: a detail-page section is rendered
- * only when its data is present, so content can be added gradually
- * without touching any component.
+ * Every product lives in `src/data/products.ts`. Missing information is
+ * stored as `null` / empty arrays and shown on the site as "v preverjanju";
+ * it is never replaced with marketing copy.
  */
+import type { TechnologyId } from "./technology";
 
 /** Market availability. Labels live in `src/lib/products.ts`. */
 export type AvailabilityStatus = "coming-soon" | "available" | "on-request";
 
+/** Where a piece of information comes from — shown as a label next to it. */
+export type EvidenceKind =
+  /** Official register entries or documented approvals (CE, FDA …). */
+  | "regulativa"
+  /** Peer-reviewed publication or trial registry entry. */
+  | "raziskava"
+  /** Manufacturer material or press release, not independently verified. */
+  | "proizvajalec"
+  /** Media report relaying information; original not yet reviewed. */
+  | "medij";
+
+export interface SourceLink {
+  label: string;
+  url: string;
+}
+
+export interface EvidenceItem {
+  kind: EvidenceKind;
+  title: string;
+  /** Plain-language summary, including size and limitations when known. */
+  summary: string;
+  /** ISO date or partial date ("2025", "2025-07"). */
+  date?: string;
+  sources: SourceLink[];
+}
+
+export interface RegulatoryEntry {
+  /** Market, e.g. "EU" or "ZDA". */
+  region: string;
+  status: string;
+  /** Who states it: register/regulator, manufacturer, or not yet verified. */
+  basis: Exclude<EvidenceKind, "raziskava"> | "v-preverjanju";
+  source?: SourceLink;
+}
+
 export interface ProductImage {
-  /** Path under /public (e.g. "/images/products/piomic-coms-one.jpg") or an allowed remote URL. */
+  /** Path under /public or an allowed remote URL. */
   src: string;
-  /** Descriptive Slovenian alt text. */
   alt: string;
   width: number;
   height: number;
   /** Marks a temporary illustration that must be replaced with real product photography. */
   isPlaceholder?: boolean;
-}
-
-export interface ProductKeyBenefit {
-  title: string;
-  description: string;
 }
 
 export interface ProductSpecification {
@@ -35,28 +61,15 @@ export interface ProductSpecification {
 }
 
 export interface ProductSpecificationGroup {
-  /** Optional group heading, e.g. "Mere in teža". */
   title?: string;
   items: ProductSpecification[];
-}
-
-export interface ProductIntendedUse {
-  /** Intended-use statement as defined in the manufacturer's documentation. */
-  summary?: string;
-  indications?: string[];
-  contraindications?: string[];
-  /** Additional regulatory or safety note shown below the lists. */
-  note?: string;
 }
 
 export interface ProductDownload {
   title: string;
   description?: string;
-  /** Path under /public (e.g. "/downloads/piomic/brosura.pdf") or an external URL. */
   href: string;
-  /** Display label, e.g. "PDF". */
   fileType: string;
-  /** Display label, e.g. "2,4 MB". */
   fileSize?: string;
 }
 
@@ -65,42 +78,45 @@ export interface ProductFaqItem {
   answer: string;
 }
 
-/** Extended content for the individual product page. */
+/** Optional extended content for the product page (rendered only when present). */
 export interface ProductDetails {
-  /** Large hero visual; falls back to `Product.image`. */
   heroImage?: ProductImage;
-  keyBenefits?: ProductKeyBenefit[];
   specifications?: ProductSpecificationGroup[];
-  intendedUse?: ProductIntendedUse;
   downloads?: ProductDownload[];
   faq?: ProductFaqItem[];
 }
 
 export interface Product {
-  /** URL segment for /products/[slug]. Must be unique, lowercase, hyphenated. */
+  /** URL segment for /products/[slug]. Unique, lowercase, hyphenated. */
   slug: string;
   manufacturer: string;
-  /** Display name used on the website (Slovenian where the original is descriptive). */
+  /** Display name used on the website. */
   productName: string;
   /** Official product name as used by the manufacturer. */
   originalName: string;
-  /** Short label for the notification form, e.g. "Piomic — COMS® One". */
-  formLabel: string;
-  /** Therapeutic / functional area, used as an eyebrow and for future filtering. */
-  category: string;
+  /** Technology category (see `src/data/technologies.ts`). */
+  technology: TechnologyId;
   shortDescription: string;
-  /** Paragraphs separated by an empty line ("\n\n"). */
-  longDescription: string;
-  /** Benefit tags shown on cards (2–4 recommended). */
-  benefits: string[];
+  /** Intended purpose in plain language (as stated by the manufacturer). */
+  intendedUse: string;
+  /** Intended user environment; null = not yet verified. */
+  environment: string | null;
+  /** How it works in plain language; null = not yet verified. */
+  howItWorks: string | null;
+  /** Benefits as stated by the manufacturer — always labelled as such. */
+  manufacturerClaims: string[];
+  limitations: string[];
+  warnings: string[];
+  evidence: EvidenceItem[];
+  regulatory: RegulatoryEntry[];
+  /** Short tags for cards. */
+  tags: string[];
   image: ProductImage;
   availabilityStatus: AvailabilityStatus;
-  ctaLabel: string;
   externalManufacturerUrl: string;
-  /** Short regulatory note shown on the card and the detail page. */
-  regulatoryNote?: string;
+  /** Date the product information was last updated (ISO). */
+  updatedAt: string;
   details?: ProductDetails;
-  /** Optional SEO overrides for the detail page. */
   seo?: {
     title?: string;
     description?: string;

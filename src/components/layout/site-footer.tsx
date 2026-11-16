@@ -2,15 +2,14 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Container } from "@/components/ui/container";
-import { InfoIcon, LinkedInIcon, MailIcon } from "@/components/ui/icons";
-import { footerNav, legalNav, medicalDisclaimer, siteConfig } from "@/config/site";
-import { getAllProducts, getProductPath } from "@/lib/products";
+import { InfoIcon, LinkedInIcon, MailIcon, MapPinIcon, PhoneIcon } from "@/components/ui/icons";
+import { footerNav, legalNav, medicalDisclaimer, sectionIds, siteConfig } from "@/config/site";
 
 import { CurrentYear } from "./current-year";
 import { Logo } from "./logo";
 
 const linkClass =
-  "text-[0.9375rem] text-ink-300 transition-colors duration-200 hover:text-white focus-visible:text-white";
+  "text-[0.9375rem] text-ink-400 transition-colors duration-200 hover:text-white focus-visible:text-white";
 
 function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -22,56 +21,31 @@ function FooterColumn({ title, children }: { title: string; children: ReactNode 
 }
 
 export function SiteFooter() {
-  const products = getAllProducts();
+  const { contact } = siteConfig;
 
   return (
     <footer className="relative overflow-hidden bg-ink-950 text-ink-300">
-      <div
-        aria-hidden="true"
-        className="bg-grid-light pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_70%)] opacity-40"
-      />
       <Container className="relative pt-20 pb-10">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Logo tone="light" />
-            <p className="mt-6 max-w-sm text-[0.9375rem] leading-relaxed text-ink-300">
+            <p className="mt-6 max-w-sm text-[0.9375rem] leading-relaxed text-ink-400">
               {siteConfig.shortDescription}
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href={`mailto:${siteConfig.contact.email}`}
-                className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-white ring-1 ring-white/10 transition hover:bg-white/10"
-              >
-                <MailIcon className="size-4" />
-                {siteConfig.contact.email}
-              </a>
-              <a
-                href={siteConfig.contact.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Medcore na LinkedInu (odpre se v novem oknu)"
-                className="inline-flex size-9 items-center justify-center rounded-full bg-white/5 text-white ring-1 ring-white/10 transition hover:bg-white/10"
-              >
-                <LinkedInIcon className="size-4" />
-              </a>
-            </div>
+            <Link
+              href={`/#${sectionIds.newsletter}`}
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white/[0.05] px-4 py-2 text-sm font-medium text-white ring-1 ring-white/10 transition hover:bg-white/10"
+            >
+              Naročite se na novičke
+            </Link>
           </div>
 
-          <nav aria-label="Noga strani" className="grid gap-10 sm:grid-cols-3 lg:col-span-7 lg:col-start-6">
-            <FooterColumn title="Medcore">
+          <nav aria-label="Noga strani" className="grid gap-10 sm:grid-cols-2 lg:col-span-5">
+            <FooterColumn title="Platforma">
               {footerNav.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className={linkClass}>
                     {item.label}
-                  </Link>
-                </li>
-              ))}
-            </FooterColumn>
-            <FooterColumn title="Portfolio">
-              {products.map((product) => (
-                <li key={product.slug}>
-                  <Link href={getProductPath(product.slug)} prefetch className={linkClass}>
-                    {product.manufacturer}
                   </Link>
                 </li>
               ))}
@@ -86,12 +60,54 @@ export function SiteFooter() {
               ))}
             </FooterColumn>
           </nav>
+
+          <div className="lg:col-span-3">
+            <h2 className="font-mono text-xs font-medium tracking-[0.18em] text-ink-400 uppercase">
+              Kontakt
+            </h2>
+            <ul className="mt-5 space-y-3 text-[0.9375rem]">
+              <li>
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="flex items-center gap-3 text-ink-300 hover:text-white"
+                >
+                  <MailIcon className="size-4 text-ink-400" />
+                  {contact.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:${contact.phoneHref}`}
+                  className="flex items-center gap-3 text-ink-300 hover:text-white"
+                >
+                  <PhoneIcon className="size-4 text-ink-400" />
+                  {contact.phoneDisplay}
+                </a>
+              </li>
+              <li className="flex items-center gap-3 text-ink-300">
+                <MapPinIcon className="size-4 text-ink-400" />
+                {contact.location}
+              </li>
+              <li>
+                <a
+                  href={contact.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-ink-300 hover:text-white"
+                >
+                  <LinkedInIcon className="size-4 text-ink-400" />
+                  LinkedIn
+                  <span className="sr-only">(odpre se v novem oknu)</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div className="mt-16 flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+        <div className="mt-16 flex gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
           <InfoIcon className="mt-0.5 size-5 shrink-0 text-accent-300" />
-          <p className="text-sm leading-relaxed text-ink-300">
-            <span className="font-medium text-white">Medicinsko obvestilo. </span>
+          <p className="text-sm leading-relaxed text-ink-400">
+            <span className="font-medium text-white">Pomembno. </span>
             {medicalDisclaimer}
           </p>
         </div>
@@ -100,7 +116,7 @@ export function SiteFooter() {
           <p>
             © <CurrentYear /> {siteConfig.legal.companyName}. Vse pravice pridržane.
           </p>
-          <p>{siteConfig.contact.location}</p>
+          <p>{siteConfig.tagline}</p>
         </div>
       </Container>
     </footer>

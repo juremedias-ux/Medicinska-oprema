@@ -24,9 +24,15 @@ export default function TermsPage() {
 
       <h2>2. Namen vsebin</h2>
       <p>
-        Vsebine na spletni strani so informativne narave in predstavljajo tehnologije, ki jih Medcore zastopa
-        ali uvaja na slovenski trg. Ne predstavljajo zavezujoče ponudbe. Dostopnost izdelkov, njihove
+        Vsebine na spletni strani so informativne narave in predstavljajo tehnologije in produkte za
+        rehabilitacijo z vsega sveta. Ne predstavljajo zavezujoče ponudbe. Dostopnost izdelkov, njihove
         lastnosti in regulativni status se lahko spremenijo.
+      </p>
+
+      <h3>Povpraševanje in dobava</h3>
+      <p>
+        Povpraševanje prek spletne strani ni naročilo in vas ne zavezuje. Pogoje dobave, ceno in obseg
+        storitev določi ponudba, ki jo pripravimo za posamezno povpraševanje.
       </p>
 
       <h2>3. Medicinsko obvestilo</h2>

@@ -1,74 +1,86 @@
-import { HeroNotifyForm } from "@/components/forms/notify-form";
+import { ExplorerLink } from "@/components/explorer/explorer-context";
 import { ButtonArrow, buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { CheckIcon } from "@/components/ui/icons";
 import { Eyebrow } from "@/components/ui/section-heading";
-import { sectionIds, siteConfig } from "@/config/site";
-import { getProductInterestOptions } from "@/lib/products";
-import { cn } from "@/lib/utils";
+import { sectionIds } from "@/config/site";
+import { getNeedsByType } from "@/lib/explorer";
 
 import { HeroVisual } from "./hero-visual";
 
-const highlights = [
-  "5 izbranih tehnologij",
-  "Lokalna distribucija in podpora",
-  "Za strokovnjake in uporabnike",
-];
+/** Short labels for the entry chips (full labels appear in the explorer). */
+const chipLabels: Record<string, string> = {
+  glava: "Nevrološka rehabilitacija",
+  roka: "Komolec in roka",
+  stopalo: "Gleženj in stopalo",
+  hrbet: "Hrbet",
+  kolk: "Kolk",
+};
 
 export function Hero() {
-  return (
-    <section
-      aria-labelledby="hero-title"
-      className="relative overflow-hidden bg-gradient-to-b from-ink-50 via-white to-white"
-    >
-      <div
-        aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_right,black_10%,transparent_65%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 right-[-10%] size-[42rem] rounded-full bg-accent-200/30 blur-3xl"
-      />
+  const regions = getNeedsByType("predel");
 
-      <Container className="relative grid items-center gap-16 pt-32 pb-24 sm:pt-36 lg:grid-cols-12 lg:gap-12 lg:pt-40 lg:pb-32">
+  return (
+    <section aria-labelledby="hero-title" className="surface-dark relative overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="grid-lines pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_30%,black_10%,transparent_65%)]"
+      />
+      <Container className="relative grid items-center gap-14 pt-28 pb-20 sm:pt-32 lg:min-h-[min(100svh,58rem)] lg:grid-cols-12 lg:gap-10 lg:pt-24 lg:pb-12">
         <div className="lg:col-span-7">
-          <Eyebrow className="animate-fade-up">{siteConfig.tagline}</Eyebrow>
+          <Eyebrow tone="dark" className="animate-fade-up">
+            Medcore · Tehnologije za rehabilitacijo
+          </Eyebrow>
 
           <h1
             id="hero-title"
-            className="mt-6 text-[2.5rem] leading-[1.04] font-semibold tracking-[-0.035em] text-ink-950 sm:text-5xl lg:text-[3.6rem] xl:text-[4rem]"
+            className="mt-6 text-[2.5rem] leading-[1.02] font-semibold tracking-[-0.045em] text-white sm:text-[3.25rem] lg:text-[3.75rem] xl:text-[4.25rem]"
           >
-            Vrhunske medicinske tehnologije{" "}
-            <span className="text-ink-500">za hitrejše celjenje in natančnejšo diagnostiko.</span>
+            Napredna tehnologija.
+            <span className="block text-ink-400">Nove možnosti za vaše okrevanje.</span>
           </h1>
 
-          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-ink-600 sm:text-xl sm:leading-relaxed">
-            Medcore na slovenski trg uvaja izbrane inovativne medicinske in fizioterapevtske produkte iz
-            Evrope in ZDA. Zastopamo tehnologije, ki zdravstvenim strokovnjakom in uporabnikom prinašajo
-            dostop do naprednejših rešitev.
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-300 sm:text-[1.1875rem] sm:leading-relaxed">
+            Odkrijte sodobne rešitve za rehabilitacijo z vsega sveta. Pomagamo vam razumeti možnosti, izbrati
+            ustrezen produkt ter urediti njegov uvoz in dobavo.
           </p>
 
-          <div className="mt-10 max-w-xl animate-fade-up [animation-delay:120ms]">
-            <HeroNotifyForm options={getProductInterestOptions()} />
-            <a
-              href={`#${sectionIds.products}`}
-              className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "mt-6")}
-            >
-              Raziskuj izdelke
+          <div className="mt-8 flex animate-fade-up flex-wrap items-center gap-x-6 gap-y-4 [animation-delay:120ms]">
+            <ExplorerLink className={buttonVariants({ variant: "accent", size: "lg" })}>
+              Raziščite rešitve
               <ButtonArrow />
+            </ExplorerLink>
+            <a
+              href={`#${sectionIds.howWeHelp}`}
+              className="group inline-flex items-center gap-2 text-base font-medium text-white underline decoration-white/25 underline-offset-[6px] transition hover:decoration-accent-300"
+            >
+              Kako vam pomagamo
             </a>
           </div>
 
-          <ul className="mt-10 flex flex-col gap-3 text-sm text-ink-600 sm:flex-row sm:flex-wrap sm:gap-x-7">
-            {highlights.map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <span className="flex size-5 items-center justify-center rounded-full bg-accent-100 text-accent-700">
-                  <CheckIcon className="size-3" strokeWidth={2.5} />
-                </span>
-                {item}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-10 border-t border-white/10 pt-6">
+            <p id="hero-entry" className="text-sm font-medium text-ink-300">
+              Začnite pri predelu telesa
+            </p>
+            <ul aria-labelledby="hero-entry" className="mt-4 flex flex-wrap gap-2">
+              {regions.map((region) => (
+                <li key={region.id}>
+                  <ExplorerLink
+                    needId={region.id}
+                    className="inline-flex min-h-10 items-center rounded-full bg-white/[0.04] px-4 text-sm text-ink-200 ring-1 ring-white/10 transition ring-inset hover:bg-white/10 hover:text-white hover:ring-accent-300/50"
+                  >
+                    {chipLabels[region.id] ?? region.label}
+                  </ExplorerLink>
+                </li>
+              ))}
+            </ul>
+            <ExplorerLink
+              tab="cilj"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-300 transition hover:text-accent-200"
+            >
+              ali izberite cilj rehabilitacije
+              <span aria-hidden="true">→</span>
+            </ExplorerLink>
+          </div>
         </div>
 
         <div className="animate-fade-up [animation-delay:200ms] lg:col-span-5">

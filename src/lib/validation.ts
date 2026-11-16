@@ -2,16 +2,20 @@
  * Form validation shared by the browser (instant feedback) and the API
  * routes (authoritative). Keep this module free of server-only imports.
  */
-import type { ContactField, FieldErrors, ProductInterestField, SignupSource } from "./forms";
-import { signupSources } from "./forms";
+import type {
+  FieldErrors,
+  FormSource,
+  InquiryField,
+  InquiryType,
+  NewsletterField,
+  RequesterType,
+} from "./forms";
+import { formSources, inquiryTypes, requesterTypes } from "./forms";
 
 export const limits = {
-  nameMin: 2,
-  nameMax: 120,
   emailMax: 254,
-  interestMessageMax: 1000,
-  contactMessageMin: 10,
-  contactMessageMax: 3000,
+  requestedProductMin: 2,
+  requestedProductMax: 200,
 } as const;
 
 // Pragmatic e-mail check: local@domain.tld without whitespace.
@@ -19,23 +23,6 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export type ValidationResult<TData, TField extends string> =
   { success: true; data: TData } | { success: false; errors: FieldErrors<TField> };
-
-export interface ProductInterestData {
-  /** Optional: the signup form only asks for an e-mail address. */
-  fullName: string | null;
-  email: string;
-  productInterest: string;
-  message: string | null;
-  source: SignupSource;
-}
-
-export interface ContactData {
-  /** Optional: the contact form only asks for an e-mail address. */
-  fullName: string | null;
-  email: string;
-  /** Optional: the contact form only asks for an e-mail address. */
-  message: string | null;
-}
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -48,20 +35,19 @@ function readString(record: UnknownRecord, key: string): string {
   return typeof value === "string" ? value : "";
 }
 
-function normalizeName(value: string): string {
-  return value.replace(/\s+/g, " ").trim();
+function compact<TField extends string>(errors: FieldErrors<TField>): FieldErrors<TField> {
+  return Object.fromEntries(
+    Object.entries(errors).filter(([, message]) => Boolean(message)),
+  ) as FieldErrors<TField>;
+}
+
+function readSource(record: UnknownRecord): FormSource {
+  const value = readString(record, "source");
+  return (formSources as readonly string[]).includes(value) ? (value as FormSource) : "website";
 }
 
 export function normalizeEmail(value: string): string {
   return value.trim().toLowerCase();
-}
-
-export function validateFullName(value: string): string | undefined {
-  const name = normalizeName(value);
-  if (!name) return "Vnesite ime in priimek.";
-  if (name.length < limits.nameMin) return "Ime in priimek mora vsebovati vsaj 2 znaka.";
-  if (name.length > limits.nameMax) return "Vnos je predolg (največ 120 znakov).";
-  return undefined;
 }
 
 export function validateEmail(value: string): string | undefined {
@@ -73,98 +59,101 @@ export function validateEmail(value: string): string | undefined {
   return undefined;
 }
 
-export function validateProductInterestValue(
-  value: string,
-  allowedValues: readonly string[],
-): string | undefined {
-  if (!value) return "Izberite izdelek.";
-  if (!allowedValues.includes(value)) return "Izberite izdelek s seznama.";
+// ── Inquiry ────────────────────────────────────────────────────────────────
+
+export interface InquiryData {
+  email: string;
+  inquiryType: InquiryType;
+  productSlug: string | null;
+  requestedProduct: string | null;
+  technology: string | null;
+  requesterType: RequesterType;
+  source: FormSource;
+}
+
+export function validateRequestedProduct(value: string): string | undefined {
+  const text = value.replace(/\s+/g, " ").trim();
+  if (!text) return "Vpišite ime produkta ali povezavo do njega.";
+  if (text.length < limits.requestedProductMin) return "Vnos je prekratek.";
+  if (text.length > limits.requestedProductMax) return "Vnos je predolg (največ 200 znakov).";
   return undefined;
 }
 
-export function validateInterestMessage(value: string): string | undefined {
-  if (value.trim().length > limits.interestMessageMax) {
-    return `Sporočilo je lahko dolgo največ ${limits.interestMessageMax} znakov.`;
-  }
-  return undefined;
-}
-
-export function validateContactMessage(value: string): string | undefined {
-  const message = value.trim();
-  if (!message) return "Vnesite sporočilo.";
-  if (message.length < limits.contactMessageMin) return "Sporočilo je prekratko.";
-  if (message.length > limits.contactMessageMax) {
-    return `Sporočilo je lahko dolgo največ ${limits.contactMessageMax} znakov.`;
-  }
-  return undefined;
-}
-
-function compact<TField extends string>(errors: FieldErrors<TField>): FieldErrors<TField> {
-  return Object.fromEntries(
-    Object.entries(errors).filter(([, message]) => Boolean(message)),
-  ) as FieldErrors<TField>;
-}
-
-export function validateProductInterest(
+export function validateInquiry(
   input: unknown,
-  allowedValues: readonly string[],
-): ValidationResult<ProductInterestData, ProductInterestField> {
+  allowed: { productSlugs: readonly string[]; technologyIds: readonly string[] },
+): ValidationResult<InquiryData, InquiryField> {
   const record = asRecord(input);
-  const fullName = readString(record, "fullName");
   const email = readString(record, "email");
-  const productInterest = readString(record, "productInterest");
-  const message = readString(record, "message");
-  const sourceInput = readString(record, "source");
+  const inquiryType = readString(record, "inquiryType") as InquiryType;
+  const productSlug = readString(record, "productSlug");
+  const requestedProduct = readString(record, "requestedProduct");
+  const technology = readString(record, "technology");
+  const requesterInput = readString(record, "requesterType");
 
-  const hasName = normalizeName(fullName) !== "";
+  const validType = (inquiryTypes as readonly string[]).includes(inquiryType);
 
-  const errors = compact<ProductInterestField>({
-    fullName: hasName ? validateFullName(fullName) : undefined,
+  const errors = compact<InquiryField>({
     email: validateEmail(email),
-    productInterest: validateProductInterestValue(productInterest, allowedValues),
-    message: validateInterestMessage(message),
+    inquiryType: validType ? undefined : "Izberite, kaj vas zanima.",
+    productSlug:
+      inquiryType === "katalog"
+        ? !productSlug
+          ? "Izberite produkt."
+          : allowed.productSlugs.includes(productSlug)
+            ? undefined
+            : "Izberite produkt s seznama."
+        : undefined,
+    requestedProduct: inquiryType === "drug-produkt" ? validateRequestedProduct(requestedProduct) : undefined,
+    technology:
+      inquiryType === "pomoc-pri-izbiri" && technology && !allowed.technologyIds.includes(technology)
+        ? "Izberite tehnologijo s seznama."
+        : undefined,
   });
 
   if (Object.keys(errors).length > 0) return { success: false, errors };
 
-  const source = (signupSources as readonly string[]).includes(sourceInput)
-    ? (sourceInput as SignupSource)
-    : "website";
+  const requesterType = (requesterTypes as readonly string[]).includes(requesterInput)
+    ? (requesterInput as RequesterType)
+    : "posameznik";
 
   return {
     success: true,
     data: {
-      fullName: hasName ? normalizeName(fullName) : null,
       email: normalizeEmail(email),
-      productInterest,
-      message: message.trim() || null,
-      source,
+      inquiryType,
+      productSlug: inquiryType === "katalog" ? productSlug : null,
+      requestedProduct: inquiryType === "drug-produkt" ? requestedProduct.replace(/\s+/g, " ").trim() : null,
+      technology: inquiryType === "pomoc-pri-izbiri" && technology ? technology : null,
+      requesterType,
+      source: readSource(record),
     },
   };
 }
 
-export function validateContact(input: unknown): ValidationResult<ContactData, ContactField> {
-  const record = asRecord(input);
-  const fullName = readString(record, "fullName");
-  const email = readString(record, "email");
-  const message = readString(record, "message");
-  const hasName = normalizeName(fullName) !== "";
-  const hasMessage = message.trim() !== "";
+// ── Newsletter ─────────────────────────────────────────────────────────────
 
-  const errors = compact<ContactField>({
-    fullName: hasName ? validateFullName(fullName) : undefined,
+export interface NewsletterData {
+  email: string;
+  source: FormSource;
+}
+
+export function validateNewsletter(input: unknown): ValidationResult<NewsletterData, NewsletterField> {
+  const record = asRecord(input);
+  const email = readString(record, "email");
+
+  const errors = compact<NewsletterField>({
     email: validateEmail(email),
-    message: hasMessage ? validateContactMessage(message) : undefined,
+    consent: record.consent === true ? undefined : "Za prijavo potrebujemo vaše soglasje.",
   });
 
   if (Object.keys(errors).length > 0) return { success: false, errors };
+  return { success: true, data: { email: normalizeEmail(email), source: readSource(record) } };
+}
 
-  return {
-    success: true,
-    data: {
-      fullName: hasName ? normalizeName(fullName) : null,
-      email: normalizeEmail(email),
-      message: hasMessage ? message.trim() : null,
-    },
-  };
+export function validateUnsubscribe(input: unknown): ValidationResult<{ email: string }, "email"> {
+  const email = readString(asRecord(input), "email");
+  const error = validateEmail(email);
+  if (error) return { success: false, errors: { email: error } };
+  return { success: true, data: { email: normalizeEmail(email) } };
 }

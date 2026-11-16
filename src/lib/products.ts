@@ -1,17 +1,14 @@
 import { products } from "@/data/products";
-import type { AvailabilityStatus, Product } from "@/types/product";
-
-import { ALL_PRODUCTS_VALUE } from "./forms";
-
-export { ALL_PRODUCTS_VALUE };
+import type { AvailabilityStatus, EvidenceKind, Product } from "@/types/product";
+import type { TechnologyId } from "@/types/technology";
 
 export const availabilityLabels: Record<AvailabilityStatus, string> = {
   "coming-soon": "Prihaja na slovenski trg",
   available: "Na voljo v Sloveniji",
-  "on-request": "Na voljo na povpraševanje",
+  "on-request": "Dobava na povpraševanje",
 };
 
-export interface ProductInterestOption {
+export interface ProductOption {
   value: string;
   label: string;
 }
@@ -28,8 +25,18 @@ export function getProductSlugs(): string[] {
   return products.map((product) => product.slug);
 }
 
+export function getProductsByTechnology(technology: TechnologyId): Product[] {
+  return products.filter((product) => product.technology === technology);
+}
+
+/** Products of the same technology first, then the rest. */
 export function getRelatedProducts(slug: string, limit = 3): Product[] {
-  return products.filter((product) => product.slug !== slug).slice(0, limit);
+  const current = getProductBySlug(slug);
+  const others = products.filter((product) => product.slug !== slug);
+  if (!current) return others.slice(0, limit);
+  const sameTechnology = others.filter((product) => product.technology === current.technology);
+  const rest = others.filter((product) => product.technology !== current.technology);
+  return [...sameTechnology, ...rest].slice(0, limit);
 }
 
 export function getProductPath(slug: string): `/products/${string}` {
@@ -40,27 +47,31 @@ export function getAvailabilityLabel(status: AvailabilityStatus): string {
   return availabilityLabels[status];
 }
 
-/** Options for the notification form, in portfolio order, plus "Vsi produkti". */
-export function getProductInterestOptions(): ProductInterestOption[] {
-  return [
-    ...products.map((product) => ({ value: product.slug, label: product.formLabel })),
-    { value: ALL_PRODUCTS_VALUE, label: "Vsi produkti" },
-  ];
+export function getProductLabel(product: Pick<Product, "manufacturer" | "productName">): string {
+  return `${product.manufacturer} — ${product.productName}`;
 }
 
-export function getProductInterestValues(): string[] {
-  return getProductInterestOptions().map((option) => option.value);
+/** Options for the inquiry form, in catalogue order. */
+export function getProductOptions(): ProductOption[] {
+  return products.map((product) => ({ value: product.slug, label: getProductLabel(product) }));
 }
 
-/** Splits `longDescription` into paragraphs. */
-export function getDescriptionParagraphs(product: Product): string[] {
-  return product.longDescription
-    .split(/\n{2,}/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
+export type EvidenceCounts = Partial<Record<EvidenceKind, number>>;
+
+export function getEvidenceCounts(product: Product): EvidenceCounts {
+  return product.evidence.reduce<EvidenceCounts>((counts, item) => {
+    counts[item.kind] = (counts[item.kind] ?? 0) + 1;
+    return counts;
+  }, {});
 }
 
-/** Two-digit portfolio index, e.g. "01". */
-export function formatProductIndex(index: number): string {
-  return String(index + 1).padStart(2, "0");
+/** True when key information is still being verified. */
+export function hasPendingData(product: Product): boolean {
+  return (
+    product.environment === null ||
+    product.howItWorks === null ||
+    product.evidence.length === 0 ||
+    product.warnings.length === 0 ||
+    product.regulatory.some((entry) => entry.basis === "v-preverjanju")
+  );
 }

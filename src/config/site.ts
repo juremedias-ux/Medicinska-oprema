@@ -7,12 +7,12 @@
  */
 export const siteConfig = {
   name: "Medcore",
-  tagline: "Izbrane tehnologije za boljšo oskrbo",
-  title: "Medcore | Inovativne medicinske in fizioterapevtske tehnologije",
+  tagline: "Dostop do svetovnih inovacij za rehabilitacijo",
+  title: "Medcore | Napredne tehnologije za rehabilitacijo",
   description:
-    "Medcore na slovenski trg uvaja inovativne medicinske in fizioterapevtske produkte iz Evrope in ZDA. Celjenje ran, diagnostika, dezinfekcija in digitalne rešitve.",
+    "Odkrijte sodobne rešitve za rehabilitacijo z vsega sveta glede na predel telesa, stanje ali cilj. Pomagamo vam razumeti možnosti, izbrati produkt ter urediti uvoz in dobavo.",
   shortDescription:
-    "Medcore na slovenski trg uvaja izbrane inovativne medicinske in fizioterapevtske tehnologije ter zagotavlja lokalno distribucijo in podporo pri uvajanju.",
+    "Medcore povezuje raziskovanje svetovnih inovacij za rehabilitacijo, razumljivo predstavitev dokazov, pomoč pri izbiri ter organizacijo uvoza in dobave.",
   locale: "sl_SI",
   language: "sl",
 
@@ -30,7 +30,7 @@ export const siteConfig = {
     address: "Ljubljana, Slovenija", // ZAMENJAJTE: naslov sedeža
     registrationNumber: "", // ZAMENJAJTE: matična številka
     vatId: "", // ZAMENJAJTE: ID za DDV
-    lastUpdated: "7. november 2026",
+    lastUpdated: "16. november 2026",
   },
 } as const;
 
@@ -41,32 +41,42 @@ export type NavItem = {
 
 /** Homepage section anchors — single source of truth for in-page navigation. */
 export const sectionIds = {
-  products: "izdelki",
-  about: "o-nas",
-  why: "zakaj-medcore",
-  notify: "obvestila",
-  contact: "kontakt",
+  explorer: "raziskovanje",
+  technologies: "tehnologije",
+  products: "produkti",
+  howWeHelp: "kako-pomagamo",
+  inquiry: "povprasevanje",
+  criteria: "kako-presojamo",
+  professionals: "za-strokovnjake",
+  news: "novosti",
+  newsletter: "novicke",
 } as const;
 
 export const mainNav: NavItem[] = [
-  { label: "Izdelki", href: `/#${sectionIds.products}` },
-  { label: "O nas", href: `/#${sectionIds.about}` },
-  { label: "Zakaj Medcore", href: `/#${sectionIds.why}` },
-  { label: "Kontakt", href: `/#${sectionIds.contact}` },
+  { label: "Raziskovanje", href: `/#${sectionIds.explorer}` },
+  { label: "Tehnologije", href: `/#${sectionIds.technologies}` },
+  { label: "Produkti", href: `/#${sectionIds.products}` },
+  { label: "Kako pomagamo", href: `/#${sectionIds.howWeHelp}` },
+  { label: "Novosti", href: `/#${sectionIds.news}` },
 ];
 
 export const footerNav: NavItem[] = [
-  { label: "Izdelki", href: `/#${sectionIds.products}` },
-  { label: "O nas", href: `/#${sectionIds.about}` },
-  { label: "Kontakt", href: `/#${sectionIds.contact}` },
+  { label: "Raziskovanje po potrebah", href: `/#${sectionIds.explorer}` },
+  { label: "Tehnologije", href: `/#${sectionIds.technologies}` },
+  { label: "Produkti", href: `/#${sectionIds.products}` },
+  { label: "Kako pomagamo", href: `/#${sectionIds.howWeHelp}` },
+  { label: "Kako presojamo tehnologije", href: `/#${sectionIds.criteria}` },
+  { label: "Za strokovne uporabnike", href: `/#${sectionIds.professionals}` },
+  { label: "Novosti", href: `/#${sectionIds.news}` },
 ];
 
 export const legalNav: NavItem[] = [
   { label: "Politika zasebnosti", href: "/privacy" },
   { label: "Pogoji uporabe", href: "/terms" },
+  { label: "Odjava od novičk", href: "/odjava" },
 ];
 
-export const notifyCtaLabel = "Obvesti me ob dostopnosti";
+export const inquiryCtaLabel = "Pošljite povpraševanje";
 
 export const medicalDisclaimer =
-  "Informacije na spletni strani so namenjene zdravstvenim strokovnjakom, poslovnim partnerjem in končnim uporabnikom. Ne nadomeščajo profesionalnega medicinskega nasveta, diagnoze ali zdravljenja.";
+  "Platforma Medcore ne nadomešča diagnoze ali individualnega nasveta zdravstvenega strokovnjaka. Predstavljene informacije so namenjene razumevanju možnosti; o primernosti rešitve se posvetujte z zdravnikom ali fizioterapevtom.";

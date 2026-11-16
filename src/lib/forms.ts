@@ -14,22 +14,32 @@ export type FormApiResponse<TField extends string = string> =
       code?: string;
     };
 
-export type ProductInterestField = "fullName" | "email" | "productInterest" | "message";
-export type ContactField = "fullName" | "email" | "message";
-
-/** Where a signup originated — stored in the `source` column. */
-export const signupSources = ["website", "website:product-page"] as const;
-export type SignupSource = (typeof signupSources)[number];
-
-/** Value stored when a visitor signs up for updates about the whole portfolio. */
-export const ALL_PRODUCTS_VALUE = "vsi-produkti";
+/** Where a submission originated — stored in the `source` column. */
+export const formSources = ["website", "website:product-page"] as const;
+export type FormSource = (typeof formSources)[number];
 
 /** Hidden anti-spam field. Real visitors never fill it in. */
 export const HONEYPOT_FIELD = "company_website";
 
+export const inquiryTypes = ["katalog", "drug-produkt", "pomoc-pri-izbiri"] as const;
+export type InquiryType = (typeof inquiryTypes)[number];
+
+export const requesterTypes = ["posameznik", "strokovnjak"] as const;
+export type RequesterType = (typeof requesterTypes)[number];
+
+export type InquiryField =
+  "email" | "inquiryType" | "productSlug" | "requestedProduct" | "technology" | "requesterType";
+
+export type NewsletterField = "email" | "consent";
+
+/** Stored with every newsletter signup as proof of what was agreed to. */
+export const NEWSLETTER_CONSENT_TEXT =
+  "Strinjam se, da mi Medcore po e-pošti pošilja novičke o tehnologijah in produktih za rehabilitacijo. Odjava je mogoča kadar koli.";
+
 export const formMessages = {
-  notifySuccess: "Hvala! Obvestili vas bomo, ko bo izbrani produkt na voljo.",
-  contactSuccess: "Hvala! Oglasili se vam bomo v najkrajšem možnem času.",
+  inquirySuccess: "Hvala. Povpraševanje smo prejeli in vam bomo odgovorili po e-pošti.",
+  newsletterSuccess: "Hvala. Prijavljeni ste na novičke. Odjavite se lahko kadar koli.",
+  unsubscribeSuccess: "Odjava je zabeležena. Če je bil naslov prijavljen, novičk ne boste več prejemali.",
   validation: "Preverite označena polja in poskusite znova.",
   rateLimited: "Prejeli smo preveč poskusov. Prosimo, poskusite znova čez nekaj minut.",
   unavailable: "Obrazec trenutno ni na voljo. Prosimo, poskusite kasneje ali nam pišite po e-pošti.",

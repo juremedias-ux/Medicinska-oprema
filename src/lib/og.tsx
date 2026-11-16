@@ -43,9 +43,9 @@ export function renderOgImage({ eyebrow, title, description, footnote }: OgImage
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "72px 80px",
-        backgroundColor: "#06121e",
+        backgroundColor: "#07080a",
         backgroundImage:
-          "radial-gradient(circle at 88% 18%, rgba(23,156,144,0.45), rgba(6,18,30,0) 45%), radial-gradient(circle at 10% 110%, rgba(56,185,171,0.18), rgba(6,18,30,0) 40%)",
+          "radial-gradient(circle at 88% 18%, rgba(52,191,212,0.35), rgba(7,8,10,0) 45%), radial-gradient(circle at 10% 110%, rgba(106,215,231,0.14), rgba(7,8,10,0) 40%)",
         color: "#ffffff",
         fontFamily: "Geist",
       }}
@@ -56,17 +56,17 @@ export function renderOgImage({ eyebrow, title, description, footnote }: OgImage
           <path
             d="M22.96 11.12A8.5 8.5 0 1 0 22.96 20.88"
             fill="none"
-            stroke="#0b1b2b"
+            stroke="#0c0e11"
             strokeWidth="2.6"
             strokeLinecap="round"
           />
-          <circle cx="16" cy="16" r="3.2" fill="#179c90" />
+          <circle cx="16" cy="16" r="3.2" fill="#34bfd4" />
         </svg>
         <div style={{ fontSize: 38, fontWeight: 600, letterSpacing: "-0.03em" }}>{siteConfig.name}</div>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", maxWidth: 980 }}>
-        <div style={{ fontSize: 24, color: "#73d5c8", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+        <div style={{ fontSize: 24, color: "#6ad7e7", letterSpacing: "0.12em", textTransform: "uppercase" }}>
           {eyebrow}
         </div>
         <div
@@ -75,11 +75,11 @@ export function renderOgImage({ eyebrow, title, description, footnote }: OgImage
           {title}
         </div>
         {description ? (
-          <div style={{ marginTop: 26, fontSize: 28, lineHeight: 1.4, color: "#b9c3ce" }}>{description}</div>
+          <div style={{ marginTop: 26, fontSize: 28, lineHeight: 1.4, color: "#b6bbc2" }}>{description}</div>
         ) : null}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 22, color: "#8a99a9" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 22, color: "#8e959f" }}>
         <div>{footnote ?? siteConfig.tagline}</div>
         <div>{siteConfig.contact.location}</div>
       </div>

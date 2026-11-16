@@ -253,3 +253,80 @@ export function BellIcon(props: IconProps) {
     </Icon>
   );
 }
+
+export function SearchIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4.5 4.5" />
+    </Icon>
+  );
+}
+
+export function ArrowDownIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 5v14" />
+      <path d="m6 13 6 6 6-6" />
+    </Icon>
+  );
+}
+
+export function PlusIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Icon>
+  );
+}
+
+export function CompassIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m15.5 8.5-2 5-5 2 2-5z" />
+    </Icon>
+  );
+}
+
+export function TruckIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M3 6.5h11v9H3z" />
+      <path d="M14 9.5h3.5l3 3v3H14z" />
+      <circle cx="7" cy="17.5" r="1.75" />
+      <circle cx="17" cy="17.5" r="1.75" />
+    </Icon>
+  );
+}
+
+export function ScaleIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 4v16M7 20h10" />
+      <path d="M5 8h14" />
+      <path d="m5 8-2.5 6a2.5 2.5 0 0 0 5 0L5 8ZM19 8l-2.5 6a2.5 2.5 0 0 0 5 0L19 8Z" />
+    </Icon>
+  );
+}
+
+export function BuildingIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 20V6.5L12 3l8 3.5V20" />
+      <path d="M3 20h18" />
+      <path d="M9 20v-4h6v4" />
+      <path d="M9 9.5h.01M15 9.5h.01M9 13h.01M15 13h.01" strokeWidth={2.4} />
+    </Icon>
+  );
+}
+
+export function NewspaperIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M5 5h11v14H6a1 1 0 0 1-1-1z" />
+      <path d="M16 9h3v9a1 1 0 0 1-1 1h-2" />
+      <path d="M8 9h5M8 12.5h5M8 16h3" />
+    </Icon>
+  );
+}

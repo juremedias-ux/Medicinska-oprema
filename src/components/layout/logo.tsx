@@ -7,8 +7,8 @@ type Tone = "dark" | "light";
 
 /** Medcore mark: an open ring around a teal core. */
 export function LogoMark({ tone = "dark", className }: { tone?: Tone; className?: string }) {
-  const background = tone === "dark" ? "#0b1b2b" : "#ffffff";
-  const ring = tone === "dark" ? "#ffffff" : "#0b1b2b";
+  const background = tone === "dark" ? "#0c0e11" : "#ffffff";
+  const ring = tone === "dark" ? "#ffffff" : "#0c0e11";
 
   return (
     <svg
@@ -25,7 +25,7 @@ export function LogoMark({ tone = "dark", className }: { tone?: Tone; className?
         strokeWidth="2.6"
         strokeLinecap="round"
       />
-      <circle cx="16" cy="16" r="3.2" fill="#179c90" />
+      <circle cx="16" cy="16" r="3.2" fill="#34bfd4" />
     </svg>
   );
 }

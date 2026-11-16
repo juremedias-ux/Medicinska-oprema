@@ -17,23 +17,38 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Politika zasebnosti"
-      intro="Varstvo vaših osebnih podatkov jemljemo resno. V tej politiki pojasnjujemo, katere podatke zbiramo prek spletne strani, za kakšen namen jih uporabljamo in kakšne pravice imate."
+      intro="Zbiramo le podatke, ki jih potrebujemo za odgovor na vaše povpraševanje in za pošiljanje novičk, na katere se prijavite. V tej politiki pojasnjujemo, katere podatke obdelujemo, zakaj in kakšne pravice imate."
     >
       <h2>1. Upravljavec osebnih podatkov</h2>
       <p>Upravljavec osebnih podatkov, zbranih prek te spletne strani, je:</p>
       <CompanyDetails />
 
       <h2>2. Katere podatke zbiramo</h2>
-      <h3>Prijava na obvestila o izdelkih</h3>
+      <h3>Povpraševanje za produkt</h3>
       <ul>
         <li>e-poštni naslov,</li>
-        <li>izdelek, za katerega želite prejemati obvestila (ali vsi izdelki).</li>
+        <li>
+          izbrani produkt, ime ali povezavo do produkta, ki ga ni na platformi, oziroma tehnologijo, ki jo
+          raziskujete,
+        </li>
+        <li>ali povpraševanje oddajate kot posameznik ali strokovni uporabnik.</li>
       </ul>
-      <h3>Kontaktni obrazec</h3>
+      <h3>Novičke</h3>
       <ul>
-        <li>e-poštni naslov.</li>
+        <li>e-poštni naslov,</li>
+        <li>besedilo in čas privolitve ter morebitni čas odjave.</li>
       </ul>
-      <p>Prek obrazcev ne zbiramo podatkov o zdravstvenem stanju.</p>
+      <h3>Raziskovanje po potrebah</h3>
+      <p>
+        Izbire v raziskovalniku (predel telesa, stanje ali cilj) se obdelajo samo v vašem brskalniku. Ne
+        pošiljamo jih na strežnik in jih ne shranjujemo.
+      </p>
+      <p>Ne zbiramo zdravstvene dokumentacije ali podatkov o diagnozi. Prosimo, da jih ne pošiljate.</p>
+      <h3>Prejšnji obrazci</h3>
+      <p>
+        Podatke, ki ste jih oddali prek prejšnjih obrazcev spletne strani (prijava na obvestila o dostopnosti
+        izdelkov in kontaktni obrazec), obdelujemo samo za namen, za katerega ste jih oddali.
+      </p>
       <h3>Tehnični podatki</h3>
       <p>
         Ob obisku spletne strani ponudnik gostovanja samodejno obdeluje tehnične podatke (npr. IP-naslov,
@@ -43,14 +58,17 @@ export default function PrivacyPage() {
       <h2>3. Nameni in pravne podlage obdelave</h2>
       <ul>
         <li>
-          <strong>Obveščanje o izbranih izdelkih</strong> (dostopnost, nove informacije, možnosti sodelovanja)
-          — na podlagi vaše privolitve (točka (a) prvega odstavka 6. člena Splošne uredbe o varstvu podatkov,
-          GDPR).
+          <strong>Odgovor na povpraševanje in priprava ponudbe</strong> — na podlagi ukrepov na vašo zahtevo
+          pred morebitno sklenitvijo pogodbe oziroma našega zakonitega interesa za komunikacijo z uporabniki
+          (točki (b) in (f) prvega odstavka 6. člena Splošne uredbe o varstvu podatkov, GDPR).
         </li>
         <li>
-          <strong>Odgovor na vaše povpraševanje</strong> — na podlagi ukrepov na vašo zahtevo pred morebitno
-          sklenitvijo pogodbe oziroma našega zakonitega interesa za komunikacijo s poslovnimi partnerji in
-          uporabniki (točki (b) in (f) prvega odstavka 6. člena GDPR).
+          <strong>Pošiljanje novičk</strong> — na podlagi vaše privolitve (točka (a) prvega odstavka 6. člena
+          GDPR). Privolitev lahko kadar koli prekličete z odjavo.
+        </li>
+        <li>
+          <strong>Obvestila o dostopnosti izdelkov (prejšnji obrazec)</strong> — na podlagi vaše privolitve
+          (točka (a) prvega odstavka 6. člena GDPR).
         </li>
         <li>
           <strong>Varnost in delovanje spletne strani</strong> — na podlagi zakonitega interesa (točka (f)
@@ -60,9 +78,10 @@ export default function PrivacyPage() {
 
       <h2>4. Rok hrambe</h2>
       <p>
-        Podatke iz prijave na obvestila hranimo do preklica privolitve oziroma dokler je to potrebno za
-        obveščanje o izbranem izdelku. Podatke iz kontaktnega obrazca hranimo toliko časa, kolikor je potrebno
-        za obravnavo povpraševanja in nadaljnjo komunikacijo. Po izteku roka podatke izbrišemo.
+        Podatke iz povpraševanja hranimo toliko časa, kolikor je potrebno za obravnavo povpraševanja, pripravo
+        ponudbe in morebitno izvedbo naročila. Podatke za novičke hranimo do odjave; po odjavi hranimo le
+        podatek o privolitvi in odjavi, kolikor je to potrebno za dokazovanje skladnosti s predpisi. Po izteku
+        roka podatke izbrišemo.
       </p>
 
       <h2>5. Obdelovalci in prenosi podatkov</h2>
@@ -79,10 +98,11 @@ export default function PrivacyPage() {
         </li>
       </ul>
       <p>
-        Če se podatki prenašajo v države zunaj Evropskega gospodarskega prostora, se prenos izvaja na podlagi
-        ustreznih zaščitnih ukrepov v skladu s poglavjem V GDPR (na primer standardnih pogodbenih klavzul
-        Evropske komisije). Osebnih podatkov ne prodajamo in jih ne posredujemo tretjim osebam za njihove
-        trženjske namene.
+        Če bomo za pošiljanje novičk uporabili zunanjo storitev, jo bomo navedli v tej politiki. Če se podatki
+        prenašajo v države zunaj Evropskega gospodarskega prostora, se prenos izvaja na podlagi ustreznih
+        zaščitnih ukrepov v skladu s poglavjem V GDPR (na primer standardnih pogodbenih klavzul Evropske
+        komisije). Osebnih podatkov ne prodajamo in jih ne posredujemo tretjim osebam za njihove trženjske
+        namene.
       </p>
 
       <h2>6. Piškotki</h2>
@@ -103,7 +123,8 @@ export default function PrivacyPage() {
         <li>preklica privolitve kadar koli, ne da bi to vplivalo na zakonitost obdelave pred preklicem.</li>
       </ul>
       <p>
-        Za uveljavljanje pravic nam pišite na{" "}
+        Od novičk se lahko kadar koli odjavite na strani <Link href="/odjava">Odjava od novičk</Link>. Za
+        uveljavljanje drugih pravic nam pišite na{" "}
         <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>. Če menite, da obdelava
         vaših podatkov ni skladna s predpisi, lahko vložite pritožbo pri Informacijskem pooblaščencu Republike
         Slovenije (

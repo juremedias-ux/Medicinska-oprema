@@ -37,6 +37,7 @@ type SectionHeadingProps = {
   id?: string;
   tone?: Tone;
   align?: "left" | "center";
+  size?: "default" | "display";
   as?: "h1" | "h2";
   className?: string;
 };
@@ -48,6 +49,7 @@ export function SectionHeading({
   id,
   tone = "light",
   align = "left",
+  size = "default",
   as: Heading = "h2",
   className,
 }: SectionHeadingProps) {
@@ -61,14 +63,22 @@ export function SectionHeading({
       <Heading
         id={id}
         className={cn(
-          "mt-5 text-[2rem] leading-[1.1] font-semibold tracking-[-0.025em] sm:text-4xl lg:text-[2.75rem]",
+          "mt-5 font-semibold tracking-[-0.035em]",
+          size === "display"
+            ? "text-[2.5rem] leading-[1.02] sm:text-6xl lg:text-7xl"
+            : "text-[2rem] leading-[1.08] sm:text-[2.75rem] lg:text-5xl",
           tone === "light" ? "text-ink-950" : "text-white",
         )}
       >
         {title}
       </Heading>
       {description ? (
-        <p className={cn("mt-5 text-lg leading-relaxed", tone === "light" ? "text-ink-600" : "text-ink-300")}>
+        <p
+          className={cn(
+            "mt-6 text-lg leading-relaxed sm:text-xl sm:leading-relaxed",
+            tone === "light" ? "text-ink-600" : "text-ink-300",
+          )}
+        >
           {description}
         </p>
       ) : null}
