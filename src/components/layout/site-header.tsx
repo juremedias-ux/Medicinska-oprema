@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { BellIcon, CloseIcon, MailIcon, MenuIcon } from "@/components/ui/icons";
+import { CloseIcon, MailIcon, MenuIcon } from "@/components/ui/icons";
 import { Container } from "@/components/ui/container";
-import { mainNav, notifyCtaLabel, sectionIds, siteConfig } from "@/config/site";
+import { inquiryCtaLabel, mainNav, sectionIds, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 import { Logo } from "./logo";
@@ -33,7 +33,7 @@ export function SiteHeader() {
   const panelRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
 
-  const notifyHref = `/#${sectionIds.notify}`;
+  const inquiryHref = `/#${sectionIds.inquiry}`;
   const isSolid = hasScrolled || isMenuOpen;
 
   // Mobile menu: lock page scroll, close on Escape, move focus into the panel.
@@ -75,13 +75,12 @@ export function SiteHeader() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300",
-        isSolid
-          ? "border-ink-200/70 bg-white/95 shadow-[0_8px_30px_-20px_rgb(11_27_43/0.35)] backdrop-blur-xl backdrop-saturate-150"
-          : "border-transparent bg-transparent",
+        "bg-ink-950/95 backdrop-blur-xl backdrop-saturate-150",
+        isSolid ? "border-white/10" : "border-transparent",
       )}
     >
       <Container className="flex h-18 items-center justify-between gap-6">
-        <Logo />
+        <Logo tone="light" />
 
         <nav aria-label="Glavna navigacija" className="hidden lg:block">
           <ul className="flex items-center gap-1">
@@ -89,7 +88,7 @@ export function SiteHeader() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="rounded-full px-4 py-2 text-[0.9375rem] font-medium text-ink-600 transition-colors duration-200 hover:bg-ink-100/70 hover:text-ink-950"
+                  className="rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-ink-300 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -99,15 +98,17 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href={notifyHref} className={cn(buttonVariants({ size: "sm" }), "hidden sm:inline-flex")}>
-            <BellIcon />
-            {notifyCtaLabel}
+          <Link
+            href={inquiryHref}
+            className={cn(buttonVariants({ variant: "accent", size: "sm" }), "hidden sm:inline-flex")}
+          >
+            {inquiryCtaLabel}
           </Link>
 
           <button
             ref={menuButtonRef}
             type="button"
-            className="inline-flex size-11 items-center justify-center rounded-full text-ink-900 transition-colors hover:bg-ink-100 lg:hidden"
+            className="inline-flex size-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 lg:hidden"
             aria-expanded={isMenuOpen}
             aria-controls={panelId}
             aria-label={isMenuOpen ? "Zapri meni" : "Odpri meni"}
@@ -123,7 +124,7 @@ export function SiteHeader() {
         aria-hidden="true"
         onClick={closeMenu}
         className={cn(
-          "fixed inset-x-0 top-18 bottom-0 bg-ink-950/25 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden",
+          "fixed inset-x-0 top-18 bottom-0 bg-ink-950/60 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden",
           isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       />
@@ -132,22 +133,22 @@ export function SiteHeader() {
         ref={panelRef}
         inert={!isMenuOpen}
         className={cn(
-          "absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-b border-ink-200/70 bg-white shadow-lift transition-[opacity,transform,visibility] duration-300 ease-out-quart lg:hidden",
+          "absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-b border-white/10 bg-ink-950 shadow-lift transition-[opacity,transform,visibility] duration-300 ease-out-quart lg:hidden",
           isMenuOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0",
         )}
       >
         <Container className="pt-4 pb-8">
           <nav aria-label="Mobilna navigacija">
-            <ul className="divide-y divide-ink-100">
+            <ul className="divide-y divide-white/10">
               {mainNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     onClick={closeMenu}
-                    className="flex items-center justify-between py-4 text-xl font-medium tracking-tight text-ink-950"
+                    className="flex items-center justify-between py-4 text-xl font-medium tracking-tight text-white"
                   >
                     {item.label}
-                    <span aria-hidden="true" className="text-ink-300">
+                    <span aria-hidden="true" className="text-ink-500">
                       →
                     </span>
                   </Link>
@@ -156,16 +157,15 @@ export function SiteHeader() {
             </ul>
           </nav>
           <Link
-            href={notifyHref}
+            href={inquiryHref}
             onClick={closeMenu}
-            className={cn(buttonVariants({ size: "lg", fullWidth: true }), "mt-6")}
+            className={cn(buttonVariants({ variant: "accent", size: "lg", fullWidth: true }), "mt-6")}
           >
-            <BellIcon />
-            {notifyCtaLabel}
+            {inquiryCtaLabel}
           </Link>
           <a
             href={`mailto:${siteConfig.contact.email}`}
-            className="mt-5 flex items-center justify-center gap-2 text-sm text-ink-600"
+            className="mt-5 flex items-center justify-center gap-2 text-sm text-ink-400"
           >
             <MailIcon className="size-4" />
             {siteConfig.contact.email}

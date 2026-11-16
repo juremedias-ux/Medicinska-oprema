@@ -2,66 +2,59 @@
 
 /* -------------------------------------------------------------------------
  * Medcore design tokens
- * ink    — deep navy neutrals (text, dark surfaces, borders)
- * accent — medical teal (single brand accent)
- * Contrast (WCAG 2.2): ink-500+ on white ≥ 4.5:1, accent-600+ on white ≥ 4.5:1.
+ * ink    — graphite neutrals (dark surfaces, text, borders)
+ * accent — glacier cyan, the single cool accent
+ * Contrast (WCAG 2.2 AA): ink-500 on white 5.2:1, ink-400 on ink-900 6.4:1,
+ * accent-700 on white 6.4:1, accent-300 on ink-900 11.5:1.
  * ---------------------------------------------------------------------- */
 @theme {
-  --color-ink-950: #06121e;
-  --color-ink-900: #0b1b2b;
-  --color-ink-800: #142a3e;
-  --color-ink-700: #23394f;
-  --color-ink-600: #3d5368;
-  --color-ink-500: #5d7186;
-  --color-ink-400: #8a99a9;
-  --color-ink-300: #b9c3ce;
-  --color-ink-200: #dde3e9;
-  --color-ink-100: #edf1f4;
-  --color-ink-50: #f6f8fa;
+  --color-ink-950: #07080a;
+  --color-ink-900: #0c0e11;
+  --color-ink-850: #121418;
+  --color-ink-800: #181b20;
+  --color-ink-750: #20242a;
+  --color-ink-700: #2b3038;
+  --color-ink-600: #444b55;
+  --color-ink-500: #666e79;
+  --color-ink-400: #8e959f;
+  --color-ink-300: #b6bbc2;
+  --color-ink-200: #d9dce0;
+  --color-ink-100: #ebedef;
+  --color-ink-50: #f5f6f7;
 
-  --color-accent-50: #effbf9;
-  --color-accent-100: #d5f5ef;
-  --color-accent-200: #ace9df;
-  --color-accent-300: #73d5c8;
-  --color-accent-400: #38b9ab;
-  --color-accent-500: #179c90;
-  --color-accent-600: #0d7f76;
-  --color-accent-700: #0d6660;
-  --color-accent-800: #0f524e;
-  --color-accent-900: #104441;
+  --color-accent-50: #ecfbfd;
+  --color-accent-100: #cff4f9;
+  --color-accent-200: #a2e8f2;
+  --color-accent-300: #6ad7e7;
+  --color-accent-400: #34bfd4;
+  --color-accent-500: #18a1b8;
+  --color-accent-600: #128197;
+  --color-accent-700: #13687a;
+  --color-accent-800: #155565;
+  --color-accent-900: #164755;
 
   --radius-4xl: 2rem;
   --radius-5xl: 2.5rem;
 
-  --shadow-soft: 0 1px 2px rgb(11 27 43 / 0.04), 0 12px 32px -16px rgb(11 27 43 / 0.14);
-  --shadow-lift: 0 2px 6px rgb(11 27 43 / 0.05), 0 32px 64px -32px rgb(11 27 43 / 0.28);
-  --shadow-glow: 0 0 0 1px rgb(13 127 118 / 0.12), 0 24px 60px -24px rgb(13 127 118 / 0.45);
+  --shadow-soft: 0 1px 2px rgb(7 8 10 / 0.04), 0 12px 32px -16px rgb(7 8 10 / 0.16);
+  --shadow-lift: 0 2px 6px rgb(7 8 10 / 0.05), 0 32px 64px -32px rgb(7 8 10 / 0.32);
+  --shadow-glow: 0 0 0 1px rgb(106 215 231 / 0.18), 0 20px 60px -20px rgb(52 191 212 / 0.45);
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --animate-fade-up: fade-up 0.9s var(--ease-out-expo) both;
-  --animate-float: float 7s ease-in-out infinite;
+  --animate-fade-up: fade-up 1s var(--ease-out-expo) both;
   --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-quart) infinite;
+  --animate-knee: knee-flex 7s ease-in-out infinite;
 
   @keyframes fade-up {
     from {
       opacity: 0;
-      transform: translate3d(0, 16px, 0);
+      transform: translate3d(0, 18px, 0);
     }
     to {
       opacity: 1;
       transform: none;
-    }
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translate3d(0, 0, 0);
-    }
-    50% {
-      transform: translate3d(0, -8px, 0);
     }
   }
 
@@ -74,6 +67,17 @@
     100% {
       transform: scale(2.4);
       opacity: 0;
+    }
+  }
+
+  /* Seated knee extension ↔ flexion, used by the hero illustration. */
+  @keyframes knee-flex {
+    0%,
+    100% {
+      transform: rotate(12deg);
+    }
+    50% {
+      transform: rotate(92deg);
     }
   }
 }
@@ -89,7 +93,7 @@
     color-scheme: light;
     scroll-behavior: smooth;
     /* Keeps anchored sections clear of the fixed header. */
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -110,12 +114,12 @@
   }
 
   ::selection {
-    background-color: var(--color-accent-100);
+    background-color: var(--color-accent-200);
     color: var(--color-ink-950);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent-600);
+    outline: 2px solid var(--color-accent-500);
     outline-offset: 3px;
   }
 
@@ -133,36 +137,52 @@
 
 @layer components {
   /*
-   * Scroll-reveal without JavaScript: CSS scroll-driven animations.
-   * Browsers without support (or users who prefer reduced motion) simply
-   * see the content immediately — nothing is ever hidden by default.
+   * Scroll-reveal without JavaScript (CSS scroll-driven animations).
+   * Unsupported browsers and reduced-motion users see content immediately.
    */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
       .reveal {
         animation: reveal-up linear both;
         animation-timeline: view();
-        animation-range: entry 5% cover 28%;
+        animation-range: entry 4% cover 26%;
       }
     }
   }
 
-  /* Subtle technical grid used behind hero and feature surfaces. */
-  .bg-grid {
+  /* Dark surface with a soft cool light from above. */
+  .surface-dark {
+    background-color: var(--color-ink-950);
     background-image:
-      linear-gradient(to right, rgb(11 27 43 / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(11 27 43 / 0.05) 1px, transparent 1px);
-    background-size: 56px 56px;
+      radial-gradient(60rem 30rem at 70% -10%, rgb(52 191 212 / 0.12), transparent 60%),
+      radial-gradient(40rem 24rem at 0% 110%, rgb(106 215 231 / 0.05), transparent 60%);
+    color: var(--color-white);
   }
 
-  .bg-grid-light {
+  /* Hairline technical grid for dark surfaces. */
+  .grid-lines {
     background-image:
-      linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
-    background-size: 56px 56px;
+      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
   }
 
-  /* Rich-text styling for legal pages and long product descriptions. */
+  .grid-lines-light {
+    background-image:
+      linear-gradient(to right, rgb(7 8 10 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(7 8 10 / 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Hide scrollbars on horizontal chip rows while keeping them scrollable. */
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Rich text for legal pages and long descriptions. */
   .prose-medcore {
     color: var(--color-ink-600);
     font-size: 1.0625rem;

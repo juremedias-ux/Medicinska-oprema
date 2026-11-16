@@ -3,46 +3,32 @@ import "server-only";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 /**
- * Minimal database typings for the tables this site writes to.
+ * Minimal database typings for the tables and functions this site uses.
  * Keep in sync with `supabase/schema.sql` (or regenerate with
  * `supabase gen types typescript` once the project grows).
  */
 export interface Database {
   public: {
     Tables: {
-      product_interest_signups: {
+      product_inquiries: {
         Row: {
           id: string;
           created_at: string;
-          full_name: string | null;
           email: string;
-          product_interest: string;
-          message: string | null;
+          inquiry_type: string;
+          product_slug: string | null;
+          requested_product: string | null;
+          technology: string | null;
+          requester_type: string;
           source: string;
         };
         Insert: {
-          full_name?: string | null;
           email: string;
-          product_interest: string;
-          message?: string | null;
-          source?: string;
-        };
-        Update: never;
-        Relationships: [];
-      };
-      contact_messages: {
-        Row: {
-          id: string;
-          created_at: string;
-          full_name: string | null;
-          email: string;
-          message: string | null;
-          source: string;
-        };
-        Insert: {
-          full_name?: string | null;
-          email: string;
-          message?: string | null;
+          inquiry_type: string;
+          product_slug?: string | null;
+          requested_product?: string | null;
+          technology?: string | null;
+          requester_type?: string;
           source?: string;
         };
         Update: never;
@@ -50,7 +36,16 @@ export interface Database {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      subscribe_newsletter: {
+        Args: { p_email: string; p_source: string; p_consent_text: string };
+        Returns: undefined;
+      };
+      unsubscribe_newsletter: {
+        Args: { p_email: string };
+        Returns: undefined;
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

@@ -12,7 +12,7 @@ export default function AppleIcon() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0b1b2b",
+        background: "#0c0e11",
       }}
     >
       <svg width="132" height="132" viewBox="0 0 32 32">
@@ -23,7 +23,7 @@ export default function AppleIcon() {
           strokeWidth="2.6"
           strokeLinecap="round"
         />
-        <circle cx="16" cy="16" r="3.2" fill="#179c90" />
+        <circle cx="16" cy="16" r="3.2" fill="#34bfd4" />
       </svg>
     </div>,
     size,

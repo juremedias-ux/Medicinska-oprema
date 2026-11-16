@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return renderOgImage({
-    eyebrow: "Medicinske in fizioterapevtske tehnologije",
-    title: "Vrhunske medicinske tehnologije za hitrejše celjenje in natančnejšo diagnostiko.",
+    eyebrow: "Tehnologije za rehabilitacijo",
+    title: "Napredna tehnologija. Nove možnosti za vaše okrevanje.",
   });
 }

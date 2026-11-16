@@ -60,7 +60,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // There is no product index page yet: send visitors to the portfolio section.
-      { source: "/products", destination: "/#izdelki", permanent: false },
+      { source: "/products", destination: "/#produkti", permanent: false },
     ];
   },
 };

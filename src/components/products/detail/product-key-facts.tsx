@@ -1,12 +1,15 @@
+import { formatDate } from "@/lib/format";
 import { getAvailabilityLabel } from "@/lib/products";
+import { getTechnology } from "@/lib/technologies";
 import type { Product } from "@/types/product";
 
 export function ProductKeyFacts({ product }: { product: Product }) {
   const facts = [
     { label: "Proizvajalec", value: product.manufacturer },
-    { label: "Uradno ime izdelka", value: product.originalName },
-    { label: "Področje", value: product.category },
-    { label: "Status v Sloveniji", value: getAvailabilityLabel(product.availabilityStatus) },
+    { label: "Uradno ime", value: product.originalName },
+    { label: "Kategorija", value: getTechnology(product.technology).name },
+    { label: "Dostopnost", value: getAvailabilityLabel(product.availabilityStatus) },
+    { label: "Podatki posodobljeni", value: formatDate(product.updatedAt) },
   ];
 
   return (

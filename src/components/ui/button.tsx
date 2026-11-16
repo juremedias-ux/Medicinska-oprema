@@ -11,21 +11,25 @@ export const buttonVariants = cva(
   [
     "group/button relative inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap",
     "transition-[background-color,color,box-shadow,transform] duration-300 ease-out-quart",
-    "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent-600",
+    "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent-500",
     "active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60",
     "[&_svg]:size-4 [&_svg]:shrink-0",
   ],
   {
     variants: {
       variant: {
+        /** Dark button for light surfaces. */
         primary:
-          "bg-ink-900 text-white shadow-[0_1px_2px_rgb(6_18_30/0.2)] hover:bg-ink-800 hover:shadow-[0_10px_30px_-12px_rgb(6_18_30/0.55)]",
+          "bg-ink-950 text-white shadow-[0_1px_2px_rgb(7_8_10/0.2)] hover:bg-ink-800 hover:shadow-[0_10px_30px_-12px_rgb(7_8_10/0.55)]",
+        /** Luminous cyan button for dark surfaces. */
         accent:
-          "bg-accent-600 text-white shadow-[0_1px_2px_rgb(13_127_118/0.25)] hover:bg-accent-700 hover:shadow-[0_10px_30px_-12px_rgb(13_127_118/0.6)]",
-        secondary: "bg-white text-ink-900 ring-1 ring-ink-200 ring-inset hover:bg-ink-50 hover:ring-ink-300",
-        ghost: "text-ink-700 hover:bg-ink-50 hover:text-ink-950",
+          "bg-accent-300 text-ink-950 shadow-[0_0_0_1px_rgb(106_215_231/0.4)] hover:bg-accent-200 hover:shadow-[0_12px_40px_-12px_rgb(52_191_212/0.7)]",
+        secondary: "bg-white text-ink-950 ring-1 ring-ink-200 ring-inset hover:bg-ink-50 hover:ring-ink-300",
+        ghost: "text-ink-700 hover:bg-ink-100 hover:text-ink-950",
         light: "bg-white text-ink-950 hover:bg-accent-50",
-        "outline-light": "text-white ring-1 ring-white/25 ring-inset hover:bg-white/10 hover:ring-white/40",
+        "outline-light":
+          "text-white ring-1 ring-white/20 ring-inset hover:bg-white/[0.06] hover:ring-white/40",
+        "ghost-light": "text-ink-300 hover:bg-white/[0.06] hover:text-white",
       },
       size: {
         sm: "h-9 px-4 text-sm",

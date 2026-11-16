@@ -10,9 +10,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Medcore project notes
 
-- Read `README.md` first (setup, architecture, content rules).
-- Product content lives only in `src/data/products.ts`; site-wide settings in `src/config/site.ts`.
-- All UI copy is Slovenian. Do not add medical claims that are not in the manufacturer's approved documentation.
+- Read `README.md` first (setup, architecture, content principles).
+- Content is data: products `src/data/products.ts`, technologies `src/data/technologies.ts`, explorer needs `src/data/needs.ts`, news `src/data/news.ts`; site settings `src/config/site.ts`.
+- All UI copy is formal Slovenian. No efficacy promises or "best" rankings; separate manufacturer claims from research/regulatory data, cite sources, and mark unknown data as "v preverjanju" instead of filling it.
+- Forms collect only an e-mail plus non-medical selections; explorer choices never leave the browser.
 - Cache Components is enabled: avoid `new Date()` / `Math.random()` in prerendered server components (see `src/components/layout/current-year.tsx`).
-- Routes stay mounted (hidden) after navigation (`<Activity>`): never rely on global element IDs for in-page behaviour; use refs.
+- Routes stay mounted (hidden) after navigation (`<Activity>`): never rely on global element IDs for in-page behaviour; use refs and product-specific ids.
 - Run `npm run check` before committing.
