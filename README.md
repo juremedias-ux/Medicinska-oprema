@@ -11,7 +11,10 @@ Built with Next.js (App Router), TypeScript, Tailwind CSS and Supabase; deployed
   professional is needed
 - **Products** — understanding-first cards and pages: intended use, environment, how it works, manufacturer
   claims vs. research/regulatory data with sources, limitations, warnings, availability; missing data is labelled
-- **Inquiry** — "Pošljite povpraševanje za produkt", also for products not on the platform or help choosing
+- **Inquiry** — "Pošljite povpraševanje za produkt". Currently only an e-mail field (`inquiryFormMode` in
+  `src/config/site.ts`); the product, technology or professional context of the clicked button is stored with
+  it. Set `inquiryFormMode` to `"full"` to show inquiry type, product / requested product / technology and
+  individual vs. professional
 - **Newsletter** — explicit consent, stored consent text, simple unsubscribe page (`/odjava`)
 - **News** — date, source and type (market news / regulation / research) with a "what this means" note
 - WCAG 2.2 AA (axe: 0 violations on key pages), keyboard navigation, reduced motion, no tracking cookies
@@ -148,9 +151,11 @@ Preview deployments are excluded from search engines via `robots.txt`.
 ## Testing the forms
 
 1. Homepage → click a body region in the hero → explorer shows technologies with explanations.
-2. Product card → **Pošljite povpraševanje** → the form opens with the product selected → enter an e-mail →
-   "Hvala. Povpraševanje smo prejeli …" → row in `product_inquiries`.
-3. Choose **Produkt, ki ga ni na platformi**, enter a name → row with `requested_product`.
+2. Product card → **Pošljite povpraševanje** → enter an e-mail → "Hvala. Povpraševanje smo prejeli …" → row in
+   `product_inquiries` with `product_slug`. From the explorer the row gets `technology`; from "Za strokovne
+   uporabnike" `requester_type = strokovnjak`; other buttons store `inquiry_type = pomoc-pri-izbiri`.
+3. With `inquiryFormMode = "full"`: choose **Produkt, ki ga ni na platformi**, enter a name → row with
+   `requested_product`.
 4. Newsletter → e-mail + consent checkbox → row in `newsletter_subscribers`.
 5. `/odjava` → same e-mail → `unsubscribed_at` is set.
 

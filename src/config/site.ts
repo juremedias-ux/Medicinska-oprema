@@ -78,5 +78,14 @@ export const legalNav: NavItem[] = [
 
 export const inquiryCtaLabel = "Pošljite povpraševanje";
 
+/**
+ * Inquiry form layout.
+ * "email-only": only the e-mail field and the submit button; the product or
+ *   technology of the clicked button is still stored with the inquiry.
+ * "full": choice of inquiry type, product / requested product / technology
+ *   and individual vs. professional.
+ */
+export const inquiryFormMode: "email-only" | "full" = "email-only";
+
 export const medicalDisclaimer =
   "Platforma Medcore ne nadomešča diagnoze ali individualnega nasveta zdravstvenega strokovnjaka. Predstavljene informacije so namenjene razumevanju možnosti; o primernosti rešitve se posvetujte z zdravnikom ali fizioterapevtom.";

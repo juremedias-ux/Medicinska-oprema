@@ -11,6 +11,7 @@ import { Button, ButtonArrow } from "@/components/ui/button";
 import { Field, Input, Select, describedBy } from "@/components/ui/form-controls";
 import { SpinnerIcon } from "@/components/ui/icons";
 import type { FieldErrors, FormSource, InquiryField, InquiryType, RequesterType } from "@/lib/forms";
+import { inquiryFormMode } from "@/config/site";
 import { HONEYPOT_FIELD, formMessages } from "@/lib/forms";
 import type { ProductOption } from "@/lib/products";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ type InquiryFormProps = {
   products: ProductOption[];
   technologies: TechnologyOption[];
   source?: FormSource;
+  mode?: "email-only" | "full";
 };
 
 const typeOptions: { value: InquiryType; label: string; hint: string }[] = [
@@ -117,7 +119,12 @@ function PrivacyNote({ id, children }: { id: string; children: ReactNode }) {
 }
 
 /** "Pošljite povpraševanje za produkt" — minimal data, no health information. */
-export function InquiryForm({ products, technologies, source = "website" }: InquiryFormProps) {
+export function InquiryForm({
+  products,
+  technologies,
+  source = "website",
+  mode = inquiryFormMode,
+}: InquiryFormProps) {
   const id = useId();
   const ids = {
     product: `${id}-product`,
@@ -143,10 +150,11 @@ export function InquiryForm({ products, technologies, source = "website" }: Inqu
   const [handledRequestId, setHandledRequestId] = useState(requestId);
   if (requestId !== handledRequestId) {
     setHandledRequestId(requestId);
-    if (preset.inquiryType) setInquiryType(preset.inquiryType);
-    if (preset.productSlug !== undefined) setProductSlug(preset.productSlug);
-    if (preset.technology !== undefined) setTechnology(preset.technology);
-    if (preset.requesterType) setRequesterType(preset.requesterType);
+    // Each CTA defines the whole context, so nothing from an earlier click carries over.
+    setInquiryType(preset.inquiryType ?? "katalog");
+    setProductSlug(preset.productSlug ?? "");
+    setTechnology(preset.technology ?? "");
+    setRequesterType(preset.requesterType ?? "posameznik");
     setErrors({});
     if (status === "success") reset();
   }
@@ -156,9 +164,16 @@ export function InquiryForm({ products, technologies, source = "website" }: Inqu
     const form = event.currentTarget;
     const honeypot = new FormData(form).get(HONEYPOT_FIELD);
 
+    // Email-only mode has no product or name field: an inquiry without a
+    // selected product is stored as a general request for help.
+    const effectiveType: InquiryType =
+      mode === "email-only" && (inquiryType === "drug-produkt" || (inquiryType === "katalog" && !productSlug))
+        ? "pomoc-pri-izbiri"
+        : inquiryType;
+
     const payload = {
       email,
-      inquiryType,
+      inquiryType: effectiveType,
       productSlug,
       requestedProduct,
       technology,
@@ -196,6 +211,72 @@ export function InquiryForm({ products, technologies, source = "website" }: Inqu
   }
 
   const isSubmitting = status === "submitting";
+
+  const submitLabel = isSubmitting ? (
+    <>
+      <SpinnerIcon className="animate-spin" />
+      Pošiljanje …
+    </>
+  ) : (
+    <>
+      Pošljite povpraševanje
+      <ButtonArrow />
+    </>
+  );
+
+  if (mode === "email-only") {
+    const otherError = Object.entries(errors).find(([field, message]) => field !== "email" && message)?.[1];
+    return (
+      <form
+        ref={formRef}
+        noValidate
+        onSubmit={handleSubmit}
+        className="relative flex flex-col gap-5"
+        aria-describedby={ids.privacy}
+      >
+        <Field id={ids.email} label="E-poštni naslov" error={errors.email}>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Input
+              id={ids.email}
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              placeholder="ime@primer.si"
+              maxLength={limits.emailMax}
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                if (errors.email)
+                  setErrors((current) => ({ ...current, email: validateEmail(event.target.value) }));
+              }}
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={describedBy(ids.email, { error: Boolean(errors.email) })}
+              className="sm:flex-1"
+            />
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isSubmitting}
+              aria-disabled={isSubmitting}
+              className="h-12 sm:px-6"
+            >
+              {submitLabel}
+            </Button>
+          </div>
+        </Field>
+
+        <HoneypotField id={ids.honeypot} />
+
+        {otherError ? <FormErrorAlert message={otherError} /> : null}
+        {status === "error" && errorMessage ? <FormErrorAlert message={errorMessage} /> : null}
+
+        <PrivacyNote id={ids.privacy}>
+          Podatke uporabimo samo za odgovor na povpraševanje. Povpraševanje ni naročilo in vas ne zavezuje.
+        </PrivacyNote>
+      </form>
+    );
+  }
 
   return (
     <form

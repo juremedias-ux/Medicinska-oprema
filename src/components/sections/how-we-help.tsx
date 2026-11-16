@@ -2,7 +2,7 @@ import { InquiryForm } from "@/components/inquiry/inquiry-form";
 import { Container } from "@/components/ui/container";
 import { CheckIcon } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { sectionIds } from "@/config/site";
+import { inquiryFormMode, sectionIds } from "@/config/site";
 import type { FormSource } from "@/lib/forms";
 import { getProductOptions } from "@/lib/products";
 import { getRehabilitationTechnologies } from "@/lib/technologies";
@@ -57,8 +57,9 @@ export function InquiryBlock({
             {title}
           </h3>
           <p className="mt-5 text-lg leading-relaxed text-ink-600">
-            Povejte nam, kateri produkt vas zanima. Povprašate lahko tudi za produkt, ki ga na platformi še
-            ni.
+            {inquiryFormMode === "email-only"
+              ? "Pustite nam e-poštni naslov. Oglasili se vam bomo in skupaj razjasnili, kateri produkt vas zanima, tudi če ga na platformi še ni."
+              : "Povejte nam, kateri produkt vas zanima. Povprašate lahko tudi za produkt, ki ga na platformi še ni."}
           </p>
           <h4 className="mt-10 text-sm font-semibold tracking-wide text-ink-900 uppercase">Kaj sledi</h4>
           <ul className="mt-4 space-y-3">
