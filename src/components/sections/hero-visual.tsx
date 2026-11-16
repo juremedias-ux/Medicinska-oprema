@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 /**
  * Hero illustration: a seated knee extension with a range-of-motion arc.
  * Pure SVG + CSS (no image request). The lower leg moves slowly between
@@ -23,9 +25,9 @@ function arcPath(from: number, to: number, radius: number) {
   return `M${start.x} ${start.y} A${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
 }
 
-export function HeroVisual() {
+export function HeroVisual({ className }: { className?: string }) {
   return (
-    <figure aria-hidden="true" className="relative mx-auto w-full max-w-[34rem] select-none">
+    <figure aria-hidden="true" className={cn("relative mx-auto w-full max-w-[34rem] select-none", className)}>
       <svg viewBox="0 0 560 560" className="h-auto w-full overflow-visible">
         <defs>
           <radialGradient id="hero-stage" cx="50%" cy="45%" r="50%">

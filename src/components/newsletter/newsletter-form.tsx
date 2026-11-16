@@ -13,8 +13,11 @@ import { HONEYPOT_FIELD, NEWSLETTER_CONSENT_TEXT, formMessages } from "@/lib/for
 import { cn } from "@/lib/utils";
 import { limits, validateEmail, validateNewsletter } from "@/lib/validation";
 
-/** Newsletter signup on dark surfaces: e-mail + explicit consent. */
-export function NewsletterForm() {
+/**
+ * Newsletter signup on dark surfaces: e-mail + explicit consent.
+ * `compact` is the smaller version used in the hero.
+ */
+export function NewsletterForm({ compact = false }: { compact?: boolean }) {
   const id = useId();
   const ids = {
     email: `${id}-email`,
@@ -112,15 +115,18 @@ export function NewsletterForm() {
           }}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? ids.emailError : undefined}
-          className="h-12 w-full min-w-0 flex-1 bg-transparent px-4 text-base text-white placeholder:text-ink-400 focus:outline-none"
+          className={cn(
+            "w-full min-w-0 flex-1 bg-transparent px-4 text-base text-white placeholder:text-ink-400 focus:outline-none",
+            compact ? "h-11" : "h-12",
+          )}
         />
         <Button
           type="submit"
           variant="accent"
-          size="lg"
+          size={compact ? "md" : "lg"}
           disabled={isSubmitting}
           aria-disabled={isSubmitting}
-          className="h-12"
+          className={compact ? "h-11" : "h-12"}
         >
           {isSubmitting ? (
             <>
@@ -145,7 +151,7 @@ export function NewsletterForm() {
         </p>
       ) : null}
 
-      <div className="mt-5 flex items-start gap-3 pl-1">
+      <div className={cn("flex items-start gap-3 pl-1", compact ? "mt-4" : "mt-5")}>
         <input
           id={ids.consent}
           name="consent"
@@ -159,7 +165,13 @@ export function NewsletterForm() {
           aria-describedby={errors.consent ? ids.consentError : undefined}
           className="mt-0.5 size-5 shrink-0 cursor-pointer rounded border-white/30 bg-transparent accent-accent-300"
         />
-        <label htmlFor={ids.consent} className="cursor-pointer text-sm leading-relaxed text-ink-300">
+        <label
+          htmlFor={ids.consent}
+          className={cn(
+            "cursor-pointer leading-relaxed text-ink-300",
+            compact ? "text-[0.8125rem]" : "text-sm",
+          )}
+        >
           {NEWSLETTER_CONSENT_TEXT}{" "}
           <Link
             href="/privacy"
@@ -191,16 +203,27 @@ export function NewsletterForm() {
         </p>
       ) : null}
 
-      <p className="mt-5 pl-1 text-[0.8125rem] text-ink-400">
-        Odjava je mogoča kadar koli na strani{" "}
-        <Link
-          href="/odjava"
-          className="text-ink-200 underline decoration-white/30 underline-offset-2 hover:text-white"
-        >
-          Odjava od novičk
-        </Link>
-        .
-      </p>
+      {compact ? (
+        <p className="mt-3 pl-1 text-[0.8125rem] text-ink-400">
+          <Link
+            href="/odjava"
+            className="text-ink-200 underline decoration-white/30 underline-offset-2 hover:text-white"
+          >
+            Odjava od novičk
+          </Link>
+        </p>
+      ) : (
+        <p className="mt-5 pl-1 text-[0.8125rem] text-ink-400">
+          Odjava je mogoča kadar koli na strani{" "}
+          <Link
+            href="/odjava"
+            className="text-ink-200 underline decoration-white/30 underline-offset-2 hover:text-white"
+          >
+            Odjava od novičk
+          </Link>
+          .
+        </p>
+      )}
     </form>
   );
 }

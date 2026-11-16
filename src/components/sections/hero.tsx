@@ -5,6 +5,8 @@ import { Eyebrow } from "@/components/ui/section-heading";
 import { sectionIds } from "@/config/site";
 import { getNeedsByType } from "@/lib/explorer";
 
+import { NewsletterForm } from "@/components/newsletter/newsletter-form";
+
 import { HeroVisual } from "./hero-visual";
 
 /** Short labels for the entry chips (full labels appear in the explorer). */
@@ -83,8 +85,22 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="animate-fade-up [animation-delay:200ms] lg:col-span-5">
-          <HeroVisual />
+        <div className="flex animate-fade-up flex-col gap-10 [animation-delay:200ms] lg:col-span-5 lg:gap-6">
+          <HeroVisual className="order-last max-w-[22rem] lg:order-first lg:max-w-[25rem]" />
+          <section
+            aria-labelledby="hero-novicke"
+            className="order-first rounded-3xl bg-white/[0.03] p-5 ring-1 ring-white/10 ring-inset sm:p-6 lg:order-last"
+          >
+            <h2 id="hero-novicke" className="text-base font-semibold text-white">
+              Novičke o napredku rehabilitacije
+            </h2>
+            <p className="mt-1 text-sm leading-relaxed text-ink-400">
+              Nove tehnologije, obetavni produkti in pomembne novosti na vaš e-poštni naslov.
+            </p>
+            <div className="mt-4">
+              <NewsletterForm compact />
+            </div>
+          </section>
         </div>
       </Container>
     </section>
