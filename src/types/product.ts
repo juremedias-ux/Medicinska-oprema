@@ -79,8 +79,18 @@ export interface ProductFaqItem {
 }
 
 /** Optional extended content for the product page (rendered only when present). */
+/** Photo shown in the product page gallery. */
+export interface ProductGalleryImage extends ProductImage {
+  /** Short description shown under the photo. */
+  caption?: string;
+  /** Origin of the photo, e.g. "Fotografija: proizvajalec". */
+  credit?: string;
+}
+
 export interface ProductDetails {
   heroImage?: ProductImage;
+  /** Additional photos shown in the "Fotografije" section. */
+  gallery?: ProductGalleryImage[];
   specifications?: ProductSpecificationGroup[];
   downloads?: ProductDownload[];
   faq?: ProductFaqItem[];

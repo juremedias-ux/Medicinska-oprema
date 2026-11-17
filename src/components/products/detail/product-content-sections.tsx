@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { EvidenceBadge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import type {
   EvidenceItem,
   ProductDownload,
   ProductFaqItem,
+  ProductGalleryImage,
   ProductSpecificationGroup,
   RegulatoryEntry,
 } from "@/types/product";
@@ -364,6 +366,43 @@ export function ProductFaq({ id, items }: { id: string; items: ProductFaqItem[] 
             </summary>
             <p className="pb-6 text-[0.9375rem] leading-relaxed text-ink-600">{item.answer}</p>
           </details>
+        ))}
+      </div>
+    </DetailSection>
+  );
+}
+
+/**
+ * Product photos without cropping. On wider screens each photo's share of the
+ * row follows its aspect ratio, so photos of different formats end up the
+ * same height.
+ */
+export function ProductGallery({ id, images }: { id: string; images: ProductGalleryImage[] }) {
+  return (
+    <DetailSection id={id} title="Fotografije">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+        {images.map((image) => (
+          <figure
+            key={image.src}
+            className="min-w-0 sm:basis-0"
+            style={{ flexGrow: image.width / image.height }}
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              width={image.width}
+              height={image.height}
+              sizes="(min-width: 1024px) 560px, (min-width: 640px) 60vw, 100vw"
+              className="h-auto w-full rounded-2xl bg-white ring-1 ring-ink-200/70"
+            />
+            {image.caption || image.credit ? (
+              <figcaption className="mt-3 text-sm leading-relaxed text-ink-600">
+                {image.caption}
+                {image.caption && image.credit ? " · " : null}
+                {image.credit ? <span className="text-ink-500">{image.credit}</span> : null}
+              </figcaption>
+            ) : null}
+          </figure>
         ))}
       </div>
     </DetailSection>
