@@ -7,6 +7,7 @@ import {
   ProductDownloads,
   ProductEvidence,
   ProductFaq,
+  ProductGallery,
   ProductHowItWorks,
   ProductPurpose,
   ProductRegulatory,
@@ -88,6 +89,9 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
               environment={product.environment}
             />
             <ProductHowItWorks id={sid("delovanje")} text={product.howItWorks} />
+            {details?.gallery?.length ? (
+              <ProductGallery id={sid("fotografije")} images={details.gallery} />
+            ) : null}
             <ProductClaimsAndLimits
               id={sid("koristi-omejitve")}
               claims={product.manufacturerClaims}

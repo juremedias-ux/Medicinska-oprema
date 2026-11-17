@@ -190,7 +190,7 @@ All content is data; components render whatever is present.
 | `evidence[]` | `kind`: `raziskava`, `regulativa`, `proizvajalec`, `medij`; summary incl. size/limits; `sources[]` with URLs |
 | `regulatory[]` | Per market; `basis`: `regulativa`, `proizvajalec`, `medij`, `v-preverjanju`; optional source |
 | `image` | Placeholder illustrations have `isPlaceholder: true` (badge in development); replace with official photos (1600 × 1200 px) |
-| `details` | Optional specifications, downloads, FAQ |
+| `details` | Optional `gallery` (photos with `caption` / `credit`, files in `public/images/products/<slug>/`), specifications, downloads, FAQ |
 
 **Technologies** — `src/data/technologies.ts`. `rehabilitation: false` keeps a category out of the explorer
 and the technology overview (used for CGM and equipment disinfection).
